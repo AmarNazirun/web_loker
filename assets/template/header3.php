@@ -17,7 +17,7 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Lowongan Online</a>
+                            <a class="nav-link" href="lowongan_online.php">Lowongan Online</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Tips Loker</a>

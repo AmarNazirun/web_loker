@@ -70,44 +70,35 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Daftar Lowongan Online</h5>
-
-                            <!-- Table with stripped rows -->
-                            <table class="table datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Nama Perusahaan</th>
-                                        <th scope="col">Posisi</th>
-                                        <th scope="col">Tanggal Dibuka</th>
-                                        <th scope="col">Tanggal Ditutup</th>
-                                        <th scope="col">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    // Contoh data lowongan online
-                                    $lowongan = [
-                                        ['id' => 1, 'perusahaan' => 'PT. ABC', 'posisi' => 'Software Engineer', 'dibuka' => '2023-10-01', 'ditutup' => '2023-10-31'],
-                                        ['id' => 2, 'perusahaan' => 'PT. XYZ', 'posisi' => 'Data Analyst', 'dibuka' => '2023-10-05', 'ditutup' => '2023-11-05'],
-                                        // Tambahkan data lainnya sesuai kebutuhan
-                                    ];
-                                    $no = 1;
-                                    foreach ($lowongan as $loker) {
-                                        echo "<tr>";
-                                        echo "<td>{$no}</td>";
-                                        echo "<td>{$loker['perusahaan']}</td>";
-                                        echo "<td>{$loker['posisi']}</td>";
-                                        echo "<td>{$loker['dibuka']}</td>";
-                                        echo "<td>{$loker['ditutup']}</td>";
-                                        echo "<td><a href='detail_lowongan.php?id={$loker['id']}' class='btn btn-primary'>Detail</a></td>";
-                                        echo "</tr>";
-                                        $no++;
-                                    }
-                                    ?>
-                                </tbody>
-                            </table><!-- End Table with stripped rows -->
-
+                            <h5 class="card-title">Detail Lowongan</h5>
+                            <p class="card-text">Berikut adalah detail dari lowongan yang Anda pilih.</p>
+                            <?php
+                            // Include database connection
+                            include '../assets/koneksi.php';
+                            // Get the ID of the job vacancy from the URL
+                            $id_lowongan = $_GET['id_lowongan'];
+                            // Query to get the job vacancy details
+                            $query = "SELECT * FROM lowongan INNER JOIN data_perusahaan ON lowongan.id_perusahaan = data_perusahaan.id_perusahaan WHERE id_lowongan = '$id_lowongan'";
+                            $result = mysqli_query($koneksi, $query);
+                            // Check if the query was successful
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                // Fetch the job vacancy details
+                                $row = mysqli_fetch_assoc($result);
+                                // Display the job vacancy details
+                                echo '<h3>' . $row['posisi'] . '</h3>';
+                                echo '<p>Perusahaan: <a href="detail_perusahaan.php?id=' . $row['id_perusahaan'] . '">' . $row['nama_perusahaan'] . '</a></p>';
+                                echo '<p>Lokasi: ' . $row['lokasi'] . '</p>';
+                                echo '<p>Gaji: ' . $row['gaji'] . '</p>';
+                                echo '<p>Deskripsi: ' . $row['deskripsi'] . '</p>';
+                            } else {
+                                echo '<p>Lowongan tidak ditemukan.</p>';
+                            }
+                            ?>
+                            <hr>
+                            <p class="card-text"><strong>Tanggal Dibuka:</strong> <?php echo $row['tanggal_dibuka']; ?></p>
+                            <p class="card-text"><strong>Tanggal Ditutup:</strong> <?php echo $row['tanggal_ditutup']; ?></p>
+                            <hr>
+                            <a href="lowongan_online.php" class="btn btn-primary">Kembali ke Lowongan Online</a>
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,27 @@ include '../config/koneksi.php';
 //     header("location:../index.php"); // jika tidak ada, maka alihkan ke halaman login
 // }
 
+// Cek apakah form lamaran telah disubmit
+if (isset($_POST['lamar'])) {
+    // Ambil ID lowongan dari form
+    $id_lowongan = $_POST['id_lowongan'];
+
+    // Cek apakah pengguna sudah login
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+
+        // Simpan lamaran ke database
+        $query = "INSERT INTO lamaran (id_lowongan, id_user) VALUES ('$id_lowongan', '$user_id')";
+        if (mysqli_query($koneksi, $query)) {
+            echo "<script>alert('Lamaran berhasil dikirim!');</script>";
+        } else {
+            echo "<script>alert('Gagal mengirim lamaran. Silakan coba lagi.');</script>";
+        }
+    } else {
+        echo "<script>alert('Anda harus login terlebih dahulu untuk melamar.');</script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -102,7 +123,11 @@ include '../config/koneksi.php';
                         echo '<p class="card-text"><strong>Tanggal Dibuka:</strong> ' . $row['tanggal_dibuka'] . '</p>';
                         echo '<p class="card-text"><strong>Tanggal Ditutup:</strong> ' . $row['tanggal_ditutup'] . '</p>';
                         echo '<hr>';
-                        echo '<a href="detail_lowongan_online.php?id=' . $row['id_lowongan'] . '" class="btn btn-primary">Lihat Detail</a>';
+                        // Tampilkan tombol untuk melamar
+                        echo '<form action="" method="post">';
+                        echo '<input type="hidden" name="id_lowongan" value="' . $row['id_lowongan'] . '">';
+                        echo '<input type="submit" name="lamar" class="btn btn-primary" value="Lamar Sekarang">';
+                        echo '</form>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';

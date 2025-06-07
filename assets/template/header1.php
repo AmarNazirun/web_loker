@@ -47,7 +47,16 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form> -->
                     <!-- login -->
-                    <a class="btn btn-primary ms-2" href="login.php">Registrasi</a>
+                    <!-- tombol registrasi dropdown pilih registrasi sebagai pelamar atau admin perusahaan -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Registrasi
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="registrasi_pelamar.php">Pelamar Pekerja</a></li>
+                            <li><a class="dropdown-item" href="registrasi_perusahan.php">Admin Perusahaan</a></li>
+                        </ul>
+                    </div>
                     <a class="btn btn-primary ms-2" href="login.php">Login</a>
                 </div>
             </div>

@@ -1,2 +1,5 @@
-buat halaman detail perusahaan yang berisi informasi perusahan yang cari lowongan
-kasih nama "detail_perusahaan" untuk halaman detail perusahaan
+buat jadi registrasi
+pastikan bisa upload foto
+
+saat daftar, cek username. jika sudah ada perintahkan ganti username
+buat passwordhas

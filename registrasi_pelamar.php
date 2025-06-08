@@ -22,8 +22,6 @@ if (isset($_POST['register'])) {
     $Foto = $_FILES['Foto']['name'];
     $Foto_Tipe = $_FILES['Foto']['type'];
     $Foto_Sumber = $_FILES['Foto']['tmp_name'];
-    $Foto_Untuk = 'pelamar';
-    $Foto_Upload = 'assets/img/foto_pelamar/' . $Foto;
     $Foto_Upload_Tujuan = 'assets/img/foto_pelamar/';
     $Foto_Upload_Tujuan .= basename($Foto);
 
@@ -39,18 +37,30 @@ if (isset($_POST['register'])) {
             // ubah password menjadi hash
             $Password_Hash = password_hash($Password, PASSWORD_DEFAULT);
 
-            // Cek apakah file foto valid
-            $valid_extensions = array("jpg", "jpeg", "png");
+            // pisahkan nama file dan ekstensi
             $foto_extension = pathinfo($Foto, PATHINFO_EXTENSION);
+            // Validasi ekstensi foto
+            $valid_extensions = array('jpg', 'jpeg', 'png');
+            // Cek apakah ekstensi foto valid
+            $foto_extension = strtolower($foto_extension); // Ubah ekstensi menjadi huruf kecil
+
+            // Cek apakah ekstensi foto valid
             if (in_array($foto_extension, $valid_extensions)) {
-                // ubah nama foto menjadi username
-                $Foto = $Username . '.' . $foto_extension;
-                // Pindahkan file foto ke folder yang dituju
+                // hapus nama foto yang ada menjadi kosong
+                $Foto = '';
+                // buat nama foto baru dengan username
+                $Foto = $Username; // Tambahkan timestamp untuk menghindari duplikasi nama
+                // tambahkan ekstensi foto
+                $Foto .= '.' . $foto_extension;
+                // Set tujuan upload foto
+                $Foto_Upload_Tujuan = 'assets/img/foto_pelamar/';
+                // simpan foto dengan nama baru
+                $Foto_Upload_Tujuan .= basename($Foto);
                 if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
-                    // Query untuk memasukkan data ke tabel data_calon
-                    $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, posisi_lamar, telepon_rumah, handphone, tanggal_lahir, tempat_lahir, jenis_kelamin, agama, status_kawin, golongan_darah, no_ktp, foto, username) VALUES ('$Nama_Lengkap', '$Posisi_Lamar', '$Telepon_Rumah', '$Handphone', '$Tanggal_Lahir', '$Tempat_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$Golongan_Darah', '$No_KTP', '$Foto', '$Username')");
                     // Query untuk memasukkan data ke tabel user
                     $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password) VALUES ('$Username', '$Password_Hash')");
+                    // Query untuk memasukkan data ke tabel data_calon
+                    $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, posisi_lamar, telepon_rumah, handphone, tanggal_lahir, tempat_lahir, jenis_kelamin, agama, status_kawin, golongan_darah, no_ktp, foto, username) VALUES ('$Nama_Lengkap', '$Posisi_Lamar', '$Telepon_Rumah', '$Handphone', '$Tanggal_Lahir', '$Tempat_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$Golongan_Darah', '$No_KTP', '$Foto', '$Username')");
                     // Cek apakah query berhasil
                     if ($query_data_calon && $query_user) {
                         echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";

@@ -1,3 +1,47 @@
+<?php
+// koneksi ke database
+include 'config/koneksi.php';
+
+// cek apakah tombol login sudah ditekan
+if (isset($_POST['login'])) {
+    // ambil data dari form
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // query untuk mengecek apakah username dan password cocok
+    $query = "SELECT * FROM user WHERE username='$username'";
+    $result = mysqli_query($koneksi, $query);
+
+    // cek apakah ada hasil
+    if (mysqli_num_rows($result) > 0) {
+        // jika ada, redirect ke halaman dashboard
+        $data = mysqli_fetch_assoc($result);
+        if (password_verify($password, $data['password'])) {
+            // set session untuk menyimpan data user
+            session_start();
+            $_SESSION['username'] = $data['username'];
+            // alihkan ke halaman dashboard sesuai level user
+            header("Location: user/index.php");
+
+            // redirect ke halaman dashboard sesuai level user
+            // if ($data['level'] == 'admin') {
+            //     header("Location: admin/dashboard.php");
+            // } elseif ($data['level'] == 'pelamar') {
+            //     header("Location: pelamar/dashboard.php");
+            // } else {
+            //     header("Location: perusahaan/dashboard.php");
+            // }
+        } else {
+            // jika password salah, tampilkan pesan error
+            echo "<script>alert('Password salah!');</script>";
+        }
+    } else {
+        // jika username tidak ditemukan, tampilkan pesan error
+        echo "<script>alert('Username tidak ditemukan!');</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,12 +101,11 @@
                                         <p class="text-center small">Enter your username & password to login</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" novalidate>
+                                    <form class="row g-3 needs-validation" novalidate method="post" action="">
 
                                         <div class="col-12">
                                             <label for="yourUsername" class="form-label">Username</label>
                                             <div class="input-group has-validation">
-                                                <span class="input-group-text" id="inputGroupPrepend">@</span>
                                                 <input type="text" name="username" class="form-control" id="yourUsername" required>
                                                 <div class="invalid-feedback">Please enter your username.</div>
                                             </div>
@@ -75,16 +118,7 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                                                <label class="form-check-label" for="rememberMe">Remember me</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Login</button>
-                                        </div>
-                                        <div class="col-12">
-                                            <p class="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
+                                            <input type="submit" name="login" class="btn btn-primary w-100" value="Login">
                                         </div>
                                     </form>
 

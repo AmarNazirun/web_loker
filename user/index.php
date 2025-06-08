@@ -1,3 +1,17 @@
+<?php
+// ceck if the user is logged in
+session_start();
+
+$username = $_SESSION['username'];
+
+// ambil data user dan data_calon
+include '../config/koneksi.php';
+$query = "SELECT * FROM user inner join data_calon on user.username = data_calon.username WHERE user.username = '$username'";
+$result = mysqli_query($koneksi, $query);
+$data = mysqli_fetch_assoc($result);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +59,7 @@
 <body>
 
   <!-- ======= Header ======= -->
-  <?php include '../assets/template/header3.php'; ?>
+  <?php include '../assets/template/header_user.php'; ?>
   <!-- End Header -->
 
   <!-- ======= Sidebar ======= -->

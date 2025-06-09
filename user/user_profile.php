@@ -213,10 +213,11 @@ $data = mysqli_fetch_assoc($result);
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Organisasi</th>
-                                        <th>Jabatan</th>
+                                        <th>Lembaga</th>
+                                        <th>Bidang</th>
                                         <th>Tahun Awal</th>
                                         <th>Tahun Akhir</th>
+                                        <th>Negara Kota</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -228,10 +229,11 @@ $data = mysqli_fetch_assoc($result);
                                     while ($row = mysqli_fetch_assoc($result_organisasi)) {
                                         echo "<tr>";
                                         echo "<td>" . $no++ . "</td>";
-                                        echo "<td>" . $row['nama_organisasi'] . "</td>";
-                                        echo "<td>" . $row['jabatan'] . "</td>";
+                                        echo "<td>" . $row['lembaga'] . "</td>";
+                                        echo "<td>" . $row['bidang'] . "</td>";
                                         echo "<td>" . $row['tahun_awal'] . "</td>";
                                         echo "<td>" . $row['tahun_akhir'] . "</td>";
+                                        echo "<td>" . $row['negara_kota'] . "</td>";
                                         echo "<td>";
                                         echo "<a href='edit_organisasi.php?id_organisasi=" . $row['id_organisasi'] . "' class='btn btn-sm btn-warning'>Edit</a> ";
                                         echo "<a href='hapus_organisasi.php?id_organisasi=" . $row['id_organisasi'] . "' class='btn btn-sm btn-danger'>Hapus</a>";

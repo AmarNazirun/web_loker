@@ -115,10 +115,15 @@ $data = mysqli_fetch_assoc($result);
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Perusahaan</th>
-                                        <th>Posisi</th>
+                                        <th>Perusahaan</th>
+                                        <th>Alamat</th>
+                                        <th>Telepon</th>
                                         <th>Tahun Awal</th>
                                         <th>Tahun Akhir</th>
+                                        <th>Posisi</th>
+                                        <th>Tanggung Jawab</th>
+                                        <th>Alasan Keluar</th>
+                                        <th>Gaji</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -131,9 +136,14 @@ $data = mysqli_fetch_assoc($result);
                                         echo "<tr>";
                                         echo "<td>" . $no++ . "</td>";
                                         echo "<td>" . $row['perusahaan'] . "</td>";
-                                        echo "<td>" . $row['posisi'] . "</td>";
+                                        echo "<td>" . $row['alamat_perusahaan'] . "</td>";
+                                        echo "<td>" . $row['telepon'] . "</td>";
                                         echo "<td>" . $row['tahun_awal'] . "</td>";
                                         echo "<td>" . $row['tahun_akhir'] . "</td>";
+                                        echo "<td>" . $row['posisi'] . "</td>";
+                                        echo "<td>" . $row['tanggung_jawab'] . "</td>";
+                                        echo "<td>" . $row['alasan_keluar'] . "</td>";
+                                        echo "<td>" . $row['gaji_terakhir'] . "</td>";
                                         echo "<td>";
                                         echo "<a href='edit_pengalaman.php?id_pengalaman=" . $row['id_pengalaman'] . "' class='btn btn-sm btn-warning'>Edit</a> ";
                                         echo "<a href='hapus_pengalaman.php?id_pengalaman=" . $row['id_pengalaman'] . "' class='btn btn-sm btn-danger'>Hapus</a>";

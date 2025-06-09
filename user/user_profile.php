@@ -185,8 +185,8 @@ $data = mysqli_fetch_assoc($result);
                                         echo "<td>" . $row['tahun_akhir'] . "</td>";
                                         echo "<td>" . $row['negara_kota'] . "</td>";
                                         echo "<td>";
-                                        echo "<a href='edit_prestasi.php?id_prestasi=" . $row['id_prestasi '] . "' class='btn btn-sm btn-warning'>Edit</a> ";
-                                        echo "<a href='hapus_prestasi.php?id_prestasi=" . $row['id_prestasi '] . "' class='btn btn-sm btn-danger'>Hapus</a>";
+                                        echo "<a href='edit_prestasi.php?id_prestasi=" . $row['id_prestasi'] . "' class='btn btn-sm btn-warning'>Edit</a> ";
+                                        echo "<a href='hapus_prestasi.php?id_prestasi=" . $row['id_prestasi'] . "' class='btn btn-sm btn-danger'>Hapus</a>";
                                         echo "</td>";
                                         echo "</tr>";
                                     }

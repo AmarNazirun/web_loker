@@ -256,7 +256,7 @@ $data = mysqli_fetch_assoc($result);
                                     <h5 class="card-title">Pendidikan</h5>
                                 </div>
                                 <div class="col-md-6 text-end">
-                                    <a href="tambah_organisasi.php" class="btn btn-sm btn-primary m-4">Tambah Pendidikan</a>
+                                    <a href="tambah_pendidikan.php" class="btn btn-sm btn-primary m-4">Tambah Pendidikan</a>
                                 </div>
                             </div>
                             <table class="table table-striped">

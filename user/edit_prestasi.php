@@ -74,26 +74,22 @@ $data = mysqli_fetch_assoc($result);
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Perbaharui Data Pengalaman Kerja</h5>
-                            <!-- General Form Elements -->
+                            <h5 class="card-title">Perbaharui Data Prestasi</h5>
                             <?php
                             // query untuk mengambil data pengalaman kerja
-                            $query = "SELECT * FROM pengalaman_kerja WHERE id_calon = $data[id_calon]";
+                            $query = "SELECT * FROM prestasi_calon WHERE id_calon = $data[id_calon]";
                             $result = mysqli_query($koneksi, $query);
                             $data = mysqli_fetch_assoc($result);
                             ?>
+                            <!-- General Form Elements -->
                             <form action="" method="post" class="row g-3">
                                 <div class="col-md-4">
-                                    <label for="nama_perusahaan" class="form-label">Perusahaan</label>
-                                    <input type="text" class="form-control" id="perusahaan" name="perusahaan" <?php echo $data['perusahaan'] ? 'value="' . htmlspecialchars($data['perusahaan']) . '"' : ''; ?> required>
+                                    <label for="lembaga" class="form-label">Lembaga</label>
+                                    <input type="text" class="form-control" id="lembaga" name="lembaga" <?php echo $data['lembaga'] ? 'value="' . htmlspecialchars($data['lembaga']) . '"' : ''; ?> required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="alamat_perusahaan" class="form-label">Alamat perusahaan</label>
-                                    <input type="text" class="form-control" id="alamat_perusahaan" name="alamat_perusahaan" <?php echo $data['alamat_perusahaan'] ? 'value="' . htmlspecialchars($data['alamat_perusahaan']) . '"' : ''; ?> required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="telepon" class="form-label">Telepon</label>
-                                    <input type="text" class="form-control" id="telepon" name="telepon" <?php echo $data['telepon'] ? 'value="' . htmlspecialchars($data['telepon']) . '"' : ''; ?> required>
+                                    <label for="bidang" class="form-label">Bidang</label>
+                                    <input type="text" class="form-control" id="bidang" name="bidang" <?php echo $data['bidang'] ? 'value="' . htmlspecialchars($data['bidang']) . '"' : ''; ?> required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="tahun_awal" class="form-label">Tahun Awal</label>
@@ -104,44 +100,27 @@ $data = mysqli_fetch_assoc($result);
                                     <input type="text" class="form-control" id="tahun_akhir" name="tahun_akhir" <?php echo $data['tahun_akhir'] ? 'value="' . htmlspecialchars($data['tahun_akhir']) . '"' : ''; ?> required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="posisi" class="form-label">Posisi</label>
-                                    <input type="text" class="form-control" id="posisi" name="posisi" <?php echo $data['posisi'] ? 'value="' . htmlspecialchars($data['posisi']) . '"' : ''; ?> required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="tanggung_jawab" class="form-label">Tanggung Jawab</label>
-                                    <input type="text" class="form-control" id="tanggung_jawab" name="tanggung_jawab" <?php echo $data['tanggung_jawab'] ? 'value="' . htmlspecialchars($data['tanggung_jawab']) . '"' : ''; ?> required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="alasan_keluar" class="form-label">Alasan Keluar</label>
-                                    <input type="text" class="form-control" id="alasan_keluar" name="alasan_keluar" <?php echo $data['alasan_keluar'] ? 'value="' . htmlspecialchars($data['alasan_keluar']) . '"' : ''; ?> required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="gaji" class="form-label">Gaji</label>
-                                    <input type="text" class="form-control" id="gaji" name="gaji" <?php echo $data['gaji_terakhir'] ? 'value="' . htmlspecialchars($data['gaji_terakhir']) . '"' : ''; ?> required>
+                                    <label for="negara_kota" class="form-label">Negara Kota</label>
+                                    <input type="text" class="form-control" id="negara_kota" name="negara_kota" <?php echo $data['negara_kota'] ? 'value="' . htmlspecialchars($data['negara_kota']) . '"' : ''; ?> required>
                                 </div>
                                 <input type="submit" name="submit" class="btn btn-primary" value="Simpan Perubahan">
                             </form><!-- End General Form Elements -->
                             <?php
                             if (isset($_POST['submit'])) {
                                 // ambil data dari form
-                                $perusahaan = $_POST['perusahaan'];
-                                $alamat_perusahaan = $_POST['alamat_perusahaan'];
-                                $telepon = $_POST['telepon'];
+                                $lembaga = $_POST['lembaga'];
+                                $bidang = $_POST['bidang'];
                                 $tahun_awal = $_POST['tahun_awal'];
                                 $tahun_akhir = $_POST['tahun_akhir'];
-                                $posisi = $_POST['posisi'];
-                                $tanggung_jawab = $_POST['tanggung_jawab'];
-                                $alasan_keluar = $_POST['alasan_keluar'];
-                                $gaji = $_POST['gaji'];
+                                $negara_kota = $_POST['negara_kota'];
 
                                 // update data ke database
-                                $query = "UPDATE pengalaman_kerja SET perusahaan='$perusahaan', alamat_perusahaan='$alamat_perusahaan', telepon='$telepon', tahun_awal='$tahun_awal', tahun_akhir='$tahun_akhir', posisi='$posisi', tanggung_jawab='$tanggung_jawab', alasan_keluar='$alasan_keluar', gaji_terakhir=$gaji WHERE id_pengalaman=$_GET[id_pengalaman]";
-
+                                $query = "UPDATE prestasi_calon SET lembaga='$lembaga', bidang='$bidang', tahun_awal='$tahun_awal', tahun_akhir='$tahun_akhir', negara_kota='$negara_kota' WHERE id_prestasi=$_GET[id_prestasi]";
                                 if (mysqli_query($koneksi, $query)) {
-                                    echo "<script>alert('Data pengalaman kerja berhasil disimpan');</script>";
+                                    echo "<script>alert('Data Prestasi berhasil disimpan');</script>";
                                     echo "<script>window.location.href='user_profile.php';</script>";
                                 } else {
-                                    echo "<script>alert('Gagal menyimpan data pengalaman kerja');</script>";
+                                    echo "<script>alert('Gagal menyimpan data Prestasi');</script>";
                                 }
                             }
                             ?>

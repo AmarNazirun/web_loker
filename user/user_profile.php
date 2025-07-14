@@ -78,6 +78,54 @@ if (isset($_POST['simpan_perubahan'])) {
     }
 }
 
+// jika user mau menghapus pengalaman kerja
+if (isset($_POST['hapus_pengalaman'])) {
+    $id_pengalaman = $_POST['id_pengalaman'];
+    // Hapus data pengalaman kerja dari database
+    $query_delete_pengalaman = "DELETE FROM pengalaman_kerja WHERE id_pengalaman=$id_pengalaman";
+    if (mysqli_query($koneksi, $query_delete_pengalaman)) {
+        echo "<script>alert('Pengalaman kerja berhasil dihapus');</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus pengalaman kerja! Silakan coba lagi.');</script>";
+    }
+}
+
+// jika user mau menghapus prestasi
+if (isset($_POST['hapus_prestasi'])) {
+    $id_prestasi = $_POST['id_prestasi'];
+    // Hapus data prestasi dari database
+    $query_delete_prestasi = "DELETE FROM prestasi_calon WHERE id_prestasi=$id_prestasi";
+    if (mysqli_query($koneksi, $query_delete_prestasi)) {
+        echo "<script>alert('Prestasi berhasil dihapus');</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus prestasi! Silakan coba lagi.');</script>";
+    }
+}
+
+// jika user mau menghapus organisasi
+if (isset($_POST['hapus_organisasi'])) {
+    $id_organisasi = $_POST['id_organisasi'];
+    // Hapus data organisasi dari database
+    $query_delete_organisasi = "DELETE FROM organisasi_calon WHERE id_organisasi=$id_organisasi";
+    if (mysqli_query($koneksi, $query_delete_organisasi)) {
+        echo "<script>alert('Organisasi berhasil dihapus');</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus organisasi! Silakan coba lagi.');</script>";
+    }
+}
+
+// jika user mau menghapus pendidikan
+if (isset($_POST['hapus_pendidikan'])) {
+    $id_pendidikan = $_POST['id_pendidikan'];
+    // Hapus data pendidikan dari database
+    $query_delete_pendidikan = "DELETE FROM pendidikan_calon WHERE id_pendidikan=$id_pendidikan";
+    if (mysqli_query($koneksi, $query_delete_pendidikan)) {
+        echo "<script>alert('Pendidikan berhasil dihapus');</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus pendidikan! Silakan coba lagi.');</script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -300,7 +348,10 @@ if (isset($_POST['simpan_perubahan'])) {
                                         echo "<td>" . $row['gaji_terakhir'] . "</td>";
                                         echo "<td>";
                                         echo "<a href='edit_pengalaman.php?id_pengalaman=" . $row['id_pengalaman'] . "' class='btn btn-sm btn-warning'>Edit</a> ";
-                                        echo "<a href='hapus_pengalaman.php?id_pengalaman=" . $row['id_pengalaman'] . "' class='btn btn-sm btn-danger'>Hapus</a>";
+                                        echo "<form action='' method='post' class='d-inline'>";
+                                        echo "<input type='hidden' name='id_pengalaman' value='" . $row['id_pengalaman'] . "'>";
+                                        echo "<input type='submit' name='hapus_pengalaman' value='Hapus' class='btn btn-sm btn-danger'>";
+                                        echo "</form>";
                                         echo "</td>";
                                         echo "</tr>";
                                     }
@@ -350,7 +401,10 @@ if (isset($_POST['simpan_perubahan'])) {
                                         echo "<td>" . $row['negara_kota'] . "</td>";
                                         echo "<td>";
                                         echo "<a href='edit_prestasi.php?id_prestasi=" . $row['id_prestasi'] . "' class='btn btn-sm btn-warning'>Edit</a> ";
-                                        echo "<a href='hapus_prestasi.php?id_prestasi=" . $row['id_prestasi'] . "' class='btn btn-sm btn-danger'>Hapus</a>";
+                                        echo "<form action='' method='post' class='d-inline'>";
+                                        echo "<input type='hidden' name='id_prestasi' value='" . $row['id_prestasi'] . "'>";
+                                        echo "<input type='submit' name='hapus_prestasi' value='Hapus' class='btn btn-sm btn-danger'>";
+                                        echo "</form>";                                        
                                         echo "</td>";
                                         echo "</tr>";
                                     }
@@ -400,7 +454,10 @@ if (isset($_POST['simpan_perubahan'])) {
                                         echo "<td>" . $row['negara_kota'] . "</td>";
                                         echo "<td>";
                                         echo "<a href='edit_organisasi.php?id_organisasi=" . $row['id_organisasi'] . "' class='btn btn-sm btn-warning'>Edit</a> ";
-                                        echo "<a href='hapus_organisasi.php?id_organisasi=" . $row['id_organisasi'] . "' class='btn btn-sm btn-danger'>Hapus</a>";
+                                        echo "<form action='' method='post' class='d-inline'>";
+                                        echo "<input type='hidden' name='id_organisasi' value='" . $row['id_organisasi'] . "'>";
+                                        echo "<input type='submit' name='hapus_organisasi' value='Hapus' class='btn btn-sm btn-danger'>";
+                                        echo "</form>";
                                         echo "</td>";
                                         echo "</tr>";
                                     }
@@ -454,7 +511,10 @@ if (isset($_POST['simpan_perubahan'])) {
                                         echo "<td>" . $row['gpa'] . "</td>";
                                         echo "<td>";
                                         echo "<a href='edit_pendidikan.php?id_pendidikan=" . $row['id_pendidikan'] . "' class='btn btn-sm btn-warning'>Edit</a> ";
-                                        echo "<a href='hapus_pendidikan.php?id_pendidikan=" . $row['id_pendidikan'] . "' class='btn btn-sm btn-danger'>Hapus</a>";
+                                        echo "<form action='' method='post' class='d-inline'>";
+                                        echo "<input type='hidden' name='id_pendidikan' value='" . $row['id_pendidikan'] . "'>";
+                                        echo "<input type='submit' name='hapus_pendidikan' value='Hapus' class='btn btn-sm btn-danger'>";
+                                        echo "</form>";
                                         echo "</td>";
                                         echo "</tr>";
                                     }

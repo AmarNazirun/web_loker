@@ -10,6 +10,74 @@ $query = "SELECT * FROM user inner join data_calon on user.username = data_calon
 $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
+// jika user mau mengubah foto
+if (isset($_POST['ubah'])) {
+    // ambil data foto dari form
+    $Foto_Sumber = $_FILES['foto']['tmp_name'];
+    $Foto = $_FILES['foto']['name'];
+    $Username = $data['username'];
+    // pisahkan nama file dan ekstensi
+    $foto_extension = pathinfo($Foto, PATHINFO_EXTENSION);
+    // Validasi ekstensi foto
+    $valid_extensions = array('jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG');
+    // Cek apakah ekstensi foto valid
+    $foto_extension = strtolower($foto_extension); // Ubah ekstensi menjadi huruf kecil
+
+    // Cek apakah ekstensi foto valid
+    if (in_array($foto_extension, $valid_extensions)) {
+        // hapus nama foto yang ada menjadi kosong
+        $Foto = '';
+        // buat nama foto baru dengan username
+        $Foto = $Username;
+        // tambahkan ekstensi foto
+        $Foto .= '.' . $foto_extension;
+        // Set tujuan upload foto
+        $Foto_Upload_Tujuan = '../assets/img/foto_pelamar/';
+        // hapus foto lama
+        if (file_exists($Foto_Upload_Tujuan . $data['foto'])) {
+            unlink($Foto_Upload_Tujuan . $data['foto']);
+        }
+        // simpan foto dengan nama baru
+        $Foto_Upload_Tujuan .= basename($Foto);
+        if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
+            // Update foto di database
+            $query_update = "UPDATE data_calon SET foto='$Foto' WHERE username='$Username'";
+            if (mysqli_query($koneksi, $query_update)) {
+                echo "<script>alert('Foto Berhasil diubah');</script>";
+            } else {
+                // Jika gagal, hapus file foto yang sudah diupload
+                unlink($Foto_Upload_Tujuan);
+                echo "<script>alert('Registrasi gagal! Silakan coba lagi.');</script>";
+            }
+        } else {
+            echo "<script>alert('Gagal mengupload foto! Pastikan file foto valid.');</script>";
+        }
+    } else {
+        echo "<script>alert('Format foto tidak valid! Hanya diperbolehkan JPG, JPEG, atau PNG.');</script>";
+    }
+}
+
+// jika user mau mengubah data profile
+if (isset($_POST['simpan_perubahan'])) {
+    $id_calon = $_POST['id_calon'];
+    $nama_lengkap = $_POST['nama_lengkap'];
+    $handphone = $_POST['handphone'];
+    $tempat_lahir = $_POST['tempat_lahir'];
+    $jenis_kelamin = $_POST['jenis_kelamin'];
+    $agama = $_POST['agama'];
+    $status_kawin = $_POST['status_kawin'];
+    $golongan_darah = $_POST['golongan_darah'];
+
+    // Update data calon di database
+    $query_update_profile = "UPDATE data_calon SET nama_lengkap='$nama_lengkap', handphone='$handphone', tempat_lahir='$tempat_lahir', jenis_kelamin='$jenis_kelamin', agama='$agama', status_kawin='$status_kawin', golongan_darah='$golongan_darah' WHERE id_calon='$id_calon'";
+    
+    if (mysqli_query($koneksi, $query_update_profile)) {
+        echo "<script>alert('Data profile berhasil diubah');</script>";
+    } else {
+        echo "<script>alert('Gagal mengubah data profile! Silakan coba lagi.');</script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -74,28 +142,114 @@ $data = mysqli_fetch_assoc($result);
 
                 <!-- profile -->
                 <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Profile</h5>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="../assets/img/<?php echo $data['foto']; ?>" alt="Foto Profil" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-                                </div>
-                                <div class="col-md-8">
-                                    <h5>Username: <?php echo $data['username']; ?></h5>
-                                    <p>Nama: <?php echo $data['nama_lengkap']; ?></p>
-                                    <p>Posisi Lamar: <?php echo $data['posisi_lamar']; ?></p>
-                                    <p>Telepon Rumah: <?php echo $data['telepon_rumah']; ?></p>
-                                    <p>Handphone: <?php echo $data['handphone']; ?></p>
-                                    <p>Tempat Lahir: <?php echo $data['tempat_lahir']; ?></p>
-                                    <p>Jenis Kelamin: <?php echo $data['jenis_kelamin']; ?></p>
-                                    <p>Agama: <?php echo $data['agama']; ?></p>
-                                    <p>Status Kawin: <?php echo $data['status_kawin']; ?></p>
-                                    <p>Golongan Darah: <?php echo $data['golongan_darah']; ?></p>
-                                    <p>No. KTP: <?php echo $data['no_ktp']; ?></p>
+                    <div class="row">
+
+                        <!-- Foto Profile Card -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 d-flex align-items-center justify-content-center">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Foto Profile</h5>
+                                    <div class="d-flex align-items-center justify-content-center w-100" style="height: 250px;">
+                                        <img src="../assets/img/foto_pelamar/<?php echo $data['foto']; ?>" alt="Foto Profil" class="img-fluid" style="object-fit: cover; width: 200px; height: 200px;">
+                                    </div>
+                                    <div class="mt-3">
+                                        <h5 class="mb-1"><?php echo htmlspecialchars($data['nama_lengkap']); ?></h5>
+                                        <span class="text-muted">@<?php echo htmlspecialchars($data['username']); ?></span>
+                                    </div>
+                                    <hr>
+                                    <form action="" method="post" enctype="multipart/form-data" class="mt-3">
+                                        <input type="file" name="foto" accept="image/*" class="form-control mb-2" required>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input type="submit" name="ubah" value="Ubah" class="btn btn-primary w-100">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="submit" name="hapus" value="Hapus" class="btn btn-danger w-100">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Identitas Profile Card -->
+                        <div class="col-md-8 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Profile</h5>
+                                    <form action="" method="post">
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Username</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="username" class="form-control" value="<?php echo htmlspecialchars($data['username']); ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Nama Lengkap</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="nama_lengkap" class="form-control" value="<?php echo htmlspecialchars($data['nama_lengkap']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Handphone</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="handphone" class="form-control" value="<?php echo htmlspecialchars($data['handphone']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Tempat Lahir</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="tempat_lahir" class="form-control" value="<?php echo htmlspecialchars($data['tempat_lahir']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Jenis Kelamin</b></label>
+                                            <div class="col-sm-8">
+                                                <select name="jenis_kelamin" class="form-control">
+                                                    <option value="Laki-laki" <?php if($data['jenis_kelamin']=='Laki-laki') echo 'selected'; ?>>Laki-laki</option>
+                                                    <option value="Perempuan" <?php if($data['jenis_kelamin']=='Perempuan') echo 'selected'; ?>>Perempuan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Agama</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="agama" class="form-control" value="<?php echo htmlspecialchars($data['agama']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Status Kawin</b></label>
+                                            <div class="col-sm-8">
+                                                <select name="status_kawin" class="form-control">
+                                                    <option value="Belum Kawin" <?php if($data['status_kawin']=='Belum Kawin') echo 'selected'; ?>>Belum Kawin</option>
+                                                    <option value="Kawin" <?php if($data['status_kawin']=='Kawin') echo 'selected'; ?>>Kawin</option>
+                                                    <option value="Cerai" <?php if($data['status_kawin']=='Cerai') echo 'selected'; ?>>Cerai</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Golongan Darah</b></label>
+                                            <div class="col-sm-8">
+                                                <select name="golongan_darah" class="form-control">
+                                                    <option value="A" <?php if($data['golongan_darah']=='A') echo 'selected'; ?>>A</option>
+                                                    <option value="B" <?php if($data['golongan_darah']=='B') echo 'selected'; ?>>B</option>
+                                                    <option value="AB" <?php if($data['golongan_darah']=='AB') echo 'selected'; ?>>AB</option>
+                                                    <option value="O" <?php if($data['golongan_darah']=='O') echo 'selected'; ?>>O</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="mt-3 text-end">
+                                            <form action="update_profile.php" method="post">
+                                                <input type="hidden" name="id_calon" value="<?php echo $data['id_calon']; ?>">
+                                                <input type="submit" name="simpan_perubahan" value="Simpan Perubahan" class="btn btn-primary col-12">
+                                            </form>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

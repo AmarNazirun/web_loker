@@ -49,7 +49,7 @@ if (isset($_POST['register'])) {
                 // hapus nama foto yang ada menjadi kosong
                 $Foto = '';
                 // buat nama foto baru dengan username
-                $Foto = $Username; // Tambahkan timestamp untuk menghindari duplikasi nama
+                $Foto = $Username;
                 // tambahkan ekstensi foto
                 $Foto .= '.' . $foto_extension;
                 // Set tujuan upload foto

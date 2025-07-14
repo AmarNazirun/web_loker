@@ -48,12 +48,12 @@
                     </form> -->
                     <!-- tombol profil -->
                     <div class="btn-group">
-                        <li class="nav-item dropdown pe-3">
+                        <div class="nav-item dropdown mx-auto d-flex align-items-center justify-content-center">
 
-                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                                <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                                <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $data['username']; ?></span>
-                            </a><!-- End Profile Iamge Icon -->
+                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" style="margin: 0 auto;">
+                                <img src="../assets/img/foto_pelamar/<?php echo $data['foto']?>" alt="Profile" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $data['nama_lengkap']; ?></span>
+                            </a><!-- End Profile Image Icon -->
 
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 

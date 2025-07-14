@@ -77,7 +77,7 @@ $data = mysqli_fetch_assoc($result);
                             <h5 class="card-title">Perbaharui Data Prestasi</h5>
                             <?php
                             // query untuk mengambil data pengalaman kerja
-                            $query = "SELECT * FROM prestasi_calon WHERE id_calon = $data[id_calon]";
+                            $query = "SELECT * FROM prestasi_calon WHERE id_prestasi = $_GET[id_prestasi]";
                             $result = mysqli_query($koneksi, $query);
                             $data = mysqli_fetch_assoc($result);
                             ?>

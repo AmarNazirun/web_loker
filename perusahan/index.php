@@ -6,7 +6,7 @@ $username = $_SESSION['username'];
 
 // ambil data user dan data_calon
 include '../config/koneksi.php';
-$query = "SELECT * FROM user inner join data_calon on user.username = data_calon.username WHERE user.username = '$username'";
+$query = "SELECT * FROM user inner join data_perusahaan on user.username = data_perusahaan.username WHERE user.username = '$username'";
 $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
@@ -59,7 +59,7 @@ $data = mysqli_fetch_assoc($result);
 <body>
 
     <!-- ======= Header ======= -->
-    <?php include '../assets/template/header_user.php'; ?>
+    <?php include '../assets/template/header_perusahaan.php'; ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->

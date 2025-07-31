@@ -46,18 +46,56 @@
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form> -->
-                    <!-- login -->
-                    <!-- tombol registrasi dropdown pilih registrasi sebagai pelamar atau admin perusahaan -->
+                    <!-- tombol profil -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Registrasi
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="registrasi_pelamar.php">Pelamar Pekerja</a></li>
-                            <li><a class="dropdown-item" href="registrasi_perusahan.php">Admin Perusahaan</a></li>
-                        </ul>
+                        <div class="nav-item dropdown mx-auto d-flex align-items-center justify-content-center">
+
+                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" style="margin: 0 auto;">
+                                <b><span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $data['nama_perusahaan']; ?></span></b>
+                            </a><!-- End Profile Image Icon -->
+
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="user_profile.php">
+                                        <i class="bi bi-person"></i>
+                                        <span>My Profile</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                        <i class="bi bi-gear"></i>
+                                        <span>Account Settings</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                                        <i class="bi bi-question-circle"></i>
+                                        <span>Need Help?</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        <span>Sign Out</span>
+                                    </a>
+                                </li>
+
+                            </ul><!-- End Profile Dropdown Items -->
+                        </li>
                     </div>
-                    <a class="btn btn-primary ms-2" href="login.php">Login</a>
                 </div>
             </div>
         </div>

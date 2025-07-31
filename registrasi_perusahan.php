@@ -1,3 +1,55 @@
+<?php
+
+include 'config/koneksi.php';
+session_start();
+
+if (isset($_SESSION['login'])) {
+    header("Location: index.php");
+    exit;
+}
+
+if (isset($_POST['daftar'])) {
+    $nama_perusahaan = $_POST['Nama_Perusahaan'];
+    $alamat = $_POST['Alamat'];
+    $telepon = $_POST['Telepon'];
+    $website = $_POST['website'];
+    $contact_person = $_POST['contact_person'];
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $Password = $_POST['password'];
+    $Konfirmasi_Password = $_POST['konfirm_password'];
+
+    // cek username
+    $cek_username = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$username'");
+    if (mysqli_num_rows($cek_username) > 0) {
+        echo "<script>alert('Username sudah ada! Silakan gunakan username lain.');</script>";
+    } else {
+        // cek apakah password dan konfirmasi password sama?
+        if ($Password !== $Konfirmasi_Password) {
+            echo "<script>alert('Password dan Konfirmasi Password tidak sama!');</script>";
+        } else {
+        // ubah password menjadi hash
+            $Password_Hash = password_hash($Password, PASSWORD_DEFAULT);
+
+            // Query untuk memasukkan data ke tabel user
+            $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$username', '$Password_Hash', 'perusahaan')");
+            // Query untuk memasukkan data ke tabel data_perusahaan
+            $query_data_perusahaan = mysqli_query($koneksi, "INSERT INTO data_perusahaan (nama_perusahaan, alamat, telepon, website, contact_person, email, username) VALUES ('$nama_perusahaan', '$alamat', '$telepon', '$website', '$contact_person', '$email', '$username')");
+            // Cek apakah query berhasil
+            if ($query_user && $query_data_perusahaan) {
+                echo "<script>alert('Registrasi Perusahaan Berhasil! Silakan login.'); window.location.href='login.php';</script>";
+            }
+            else {
+                echo "<script>alert('Registrasi Perusahaan Gagal!');</script>";
+            }
+        }
+    }
+}
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,63 +109,68 @@
                                         <p class="text-center small">Enter your personal details to create account</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" novalidate>
+                                    <form action="" method="POST" class="row g-3 needs-validation" novalidate>
                                         <div class="col-12">
                                             <label for="yourName" class="form-label">Nama Perusahaan</label>
-                                            <input type="text" name="name" class="form-control" id="yourName" required>
-                                            <div class="invalid-feedback">Please, enter your name!</div>
+                                            <input type="text" name="Nama_Perusahaan" class="form-control" id="yourName" required>
+                                            <div class="invalid-feedback">Masukkan Nama Perusahan</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Alamat</label>
+                                            <input type="text" name="Alamat" class="form-control" id="yourPassword" required>
+                                            <div class="invalid-feedback">Masukkan Alamat Perusahaan</div> 
+                                        </div>
+                                        
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Telepon</label>
+                                            <input type="text" name="Telepon" class="form-control" id="yourPassword" required>
+                                            <div class="invalid-feedback">Masukkan Nomor Telepon Perusahaan</div>
+                                        </div>
+                                        
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Website</label>
+                                            <input type="text" name="website" class="form-control" id="yourPassword" required>
+                                            <div class="invalid-feedback">Masukkan Website Perusahaan</div>
+                                        </div>
+                                        
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">contact Person</label>
+                                            <input type="text" name="contact_person" class="form-control" id="yourPassword" required>
+                                            <div class="invalid-feedback"> Masukkan Contact Person Perusahaan</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Email</label>
+                                            <input type="email" name="email" class="form-control" id="yourPassword" required>
+                                            <div class="invalid-feedback"> Masukkan Email Perusahaan</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Username Perusahaan</label>
+                                            <input type="text" name="username" class="form-control" id="yourPassword" required>
+                                            <div class="invalid-feedback"> Masukkan Username Perusahaan</div>
                                         </div>
 
                                         <div class="col-12">
                                             <label for="yourEmail" class="form-label">Password</label>
-                                            <input type="email" name="email" class="form-control" id="yourEmail" required>
+                                            <input type="password" name="password" class="form-control" id="yourEmail" required>
                                             <div class="invalid-feedback">Please enter a valid Email adddress!</div>
                                         </div>
 
                                         <div class="col-12">
                                             <label for="yourUsername" class="form-label">Konfirmasi Password</label>
                                             <div class="input-group has-validation">
-                                                <input type="text" name="username" class="form-control" id="yourUsername" required>
+                                                <input type="password" name="konfirm_password" class="form-control" id="yourUsername" required>
                                                 <div class="invalid-feedback">Please choose a username.</div>
                                             </div>
                                         </div>
-
+    
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Alamat</label>
-                                            <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Telepon</label>
-                                            <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Website</label>
-                                            <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">contact Person</label>
-                                            <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
-                                                <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-                                                <div class="invalid-feedback">You must agree before submitting.</div>
-                                            </div>
+                                            <input type="submit" name="daftar" class="btn btn-primary w-100" value="Register">
                                         </div>
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Create Account</button>
-                                        </div>
-                                        <div class="col-12">
-                                            <p class="small mb-0">Already have an account? <a href="pages-login.html">Log in</a></p>
+                                            <p class="small mb-0">Already have an account? <a href="login.php">Log in</a></p>
                                         </div>
                                     </form>
 

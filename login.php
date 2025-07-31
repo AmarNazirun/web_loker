@@ -21,16 +21,12 @@ if (isset($_POST['login'])) {
             session_start();
             $_SESSION['username'] = $data['username'];
             // alihkan ke halaman dashboard sesuai level user
-            header("Location: user/index.php");
-
-            // redirect ke halaman dashboard sesuai level user
-            // if ($data['level'] == 'admin') {
-            //     header("Location: admin/dashboard.php");
-            // } elseif ($data['level'] == 'pelamar') {
-            //     header("Location: pelamar/dashboard.php");
-            // } else {
-            //     header("Location: perusahaan/dashboard.php");
-            // }
+            if ($data['level'] == 'user') {
+                header("Location: user/index.php");
+            }
+            elseif ($data['level'] == 'perusahaan') {
+                header("Location: perusahan/index.php");
+            }
         } else {
             // jika password salah, tampilkan pesan error
             echo "<script>alert('Password salah!');</script>";

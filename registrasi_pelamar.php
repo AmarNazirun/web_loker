@@ -58,7 +58,7 @@ if (isset($_POST['register'])) {
                 $Foto_Upload_Tujuan .= basename($Foto);
                 if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
                     // Query untuk memasukkan data ke tabel user
-                    $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password) VALUES ('$Username', '$Password_Hash')");
+                    $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
                     // Query untuk memasukkan data ke tabel data_calon
                     $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, posisi_lamar, telepon_rumah, handphone, tanggal_lahir, tempat_lahir, jenis_kelamin, agama, status_kawin, golongan_darah, no_ktp, foto, username) VALUES ('$Nama_Lengkap', '$Posisi_Lamar', '$Telepon_Rumah', '$Handphone', '$Tanggal_Lahir', '$Tempat_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$Golongan_Darah', '$No_KTP', '$Foto', '$Username')");
                     // Cek apakah query berhasil

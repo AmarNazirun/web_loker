@@ -1,14 +1,15 @@
 <?php
 // error_reporting(0);
 // ob_start();
-// session_start();
+session_start();
 
+$username = $_SESSION['username'];
+
+// ambil data user dan data_calon
 include '../config/koneksi.php';
-
-// cek apakah ada sesi dengan $_SESSION['admin']
-// if (empty($_SESSION['admin'])){
-//     header("location:../index.php"); // jika tidak ada, maka alihkan ke halaman login
-// }
+$query = "SELECT * FROM user inner join data_calon on user.username = data_calon.username WHERE user.username = '$username'";
+$result = mysqli_query($koneksi, $query);
+$data = mysqli_fetch_assoc($result);
 
 // Cek apakah form lamaran telah disubmit
 if (isset($_POST['lamar'])) {
@@ -80,7 +81,7 @@ if (isset($_POST['lamar'])) {
 <body>
 
     <!-- ======= Header ======= -->
-    <?php include '../assets/template/header3.php'; ?>
+    <?php include '../assets/template/header_user.php'; ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->

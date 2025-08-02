@@ -110,9 +110,9 @@ $data = mysqli_fetch_assoc($result);
                                             <td><?php echo $status; ?></td>
                                             <td><?php echo $jumlah_pelamar; ?></td>
                                             <td>
-                                                <a href="detail_lowongan.php?id=<?php echo $row['id_lowongan']; ?>" class="btn btn-info btn-sm">Detail</a>
-                                                <a href="edit_lowongan.php?id=<?php echo $row['id_lowongan']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                                                <a href="hapus_lowongan.php?id=<?php echo $row['id_lowongan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus lowongan ini?')">Hapus</a>
+                                                <a href="detail_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-info btn-sm">Detail</a>
+                                                <a href="edit_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="hapus_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus lowongan ini?')">Hapus</a>
                                             </td>
                                         </tr>
                                     <?php }

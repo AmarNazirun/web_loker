@@ -27,6 +27,9 @@ if (isset($_POST['login'])) {
             elseif ($data['level'] == 'perusahaan') {
                 header("Location: perusahan/index.php");
             }
+            elseif ($data['level'] == 'disnaker') {
+                header("Location: disnaker/index.php");
+            }
         } else {
             // jika password salah, tampilkan pesan error
             echo "<script>alert('Password salah!');</script>";

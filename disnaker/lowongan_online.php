@@ -7,30 +7,9 @@ $username = $_SESSION['username'];
 
 // ambil data user dan data_calon
 include '../config/koneksi.php';
-$query = "SELECT * FROM user inner join data_calon on user.username = data_calon.username WHERE user.username = '$username'";
+$query = "SELECT * FROM user inner join admin_disnaker on user.username = admin_disnaker.username WHERE user.username = '$username'";
 $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
-
-// Cek apakah form lamaran telah disubmit
-if (isset($_POST['lamar'])) {
-    // Ambil ID lowongan dari form
-    $id_lowongan = $_POST['id_lowongan'];
-
-    // Cek apakah pengguna sudah login
-    if (isset($_SESSION['user_id'])) {
-        $user_id = $_SESSION['user_id'];
-
-        // Simpan lamaran ke database
-        $query = "INSERT INTO lamaran (id_lowongan, id_user) VALUES ('$id_lowongan', '$user_id')";
-        if (mysqli_query($koneksi, $query)) {
-            echo "<script>alert('Lamaran berhasil dikirim!');</script>";
-        } else {
-            echo "<script>alert('Gagal mengirim lamaran. Silakan coba lagi.');</script>";
-        }
-    } else {
-        echo "<script>alert('Anda harus login terlebih dahulu untuk melamar.');</script>";
-    }
-}
 
 ?>
 
@@ -74,14 +53,10 @@ if (isset($_POST['lamar'])) {
   ======================================================== -->
 </head>
 
-<style>
-
-</style>
-
 <body>
 
     <!-- ======= Header ======= -->
-    <?php include '../assets/template/header_user.php'; ?>
+    <?php include '../assets/template/header_disnaker.php'; ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->

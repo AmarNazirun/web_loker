@@ -159,7 +159,7 @@ if (isset($_POST['tambah_lowongan'])) {
                                             <td><?php echo $pelamar['handphone']; ?></td>
                                             <td><?php echo date('d-m-Y', strtotime($pelamar['tanggal_melamar'])); ?></td>
                                             <td>
-                                                <a href="detail_pelamar.php?id_pelamar=<?php echo $pelamar['id_pelamar']; ?>" class="btn btn-info btn-sm">Detail Pelamar</a>
+                                                <a href="detail_pelamar.php?id_calon=<?php echo $pelamar['id_calon']; ?>" class="btn btn-info btn-sm">Detail Pelamar</a>
                                                 <a href="hapus_pelamar.php?id_pelamar=<?php echo $pelamar['id_pelamar']; ?>&id_lowongan=<?php echo $_GET['id_lowongan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus pelamar ini?')">Hapus</a>
                                             </td>
                                         </tr>

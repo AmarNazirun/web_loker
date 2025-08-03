@@ -1,11 +1,13 @@
 header perusahan
 
-perusahaan upload lowongan
-
-perusahaan bisa lihat siapa yang melamar
-
-perusahaan bisa lihat profile pelamar
-
 terima pelamar
 
 buat history lamaran di dropdown menu header
+
+verivikasi lowongan disnaker
+
+Konten Dasboard:
+- lowongan terbaru
+- lowongan terverifikasi
+- Jumlah pelamar yang diterima kerja
+- jumlah lowongan yang sudah terverifikasi

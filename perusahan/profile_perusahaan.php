@@ -32,16 +32,16 @@ if (isset($_POST['ubah'])) {
         // tambahkan ekstensi foto
         $Foto .= '.' . $foto_extension;
         // Set tujuan upload foto
-        $Foto_Upload_Tujuan = '../assets/img/foto_pelamar/';
+        $Foto_Upload_Tujuan = '../assets/img/foto_perusahaan/';
         // hapus foto lama
-        if (file_exists($Foto_Upload_Tujuan . $data['foto'])) {
-            unlink($Foto_Upload_Tujuan . $data['foto']);
+        if (file_exists($Foto_Upload_Tujuan . $data['logo'])) {
+            unlink($Foto_Upload_Tujuan . $data['logo']);
         }
         // simpan foto dengan nama baru
         $Foto_Upload_Tujuan .= basename($Foto);
         if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
             // Update foto di database
-            $query_update = "UPDATE data_calon SET foto='$Foto' WHERE username='$Username'";
+            $query_update = "UPDATE data_perusahaan SET logo='$Foto' WHERE username='$Username'";
             if (mysqli_query($koneksi, $query_update)) {
                 echo "<script>alert('Foto Berhasil diubah');</script>";
             } else {

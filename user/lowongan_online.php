@@ -29,7 +29,7 @@ if (isset($_POST['lamar'])) {
             echo '<script>window.location.href = "lowongan_online.php";</script>';
         } else {
             // Jika belum melamar, lakukan proses lamaran
-            $insert_query = "INSERT INTO pelamar (tanggal_melamar, id_lowongan, id_calon) VALUES (NOW(), '$id_lowongan', '$user_id')";
+            $insert_query = "INSERT INTO pelamar (tanggal_melamar, id_lowongan, id_calon, status_lamaran) VALUES (NOW(), '$id_lowongan', '$user_id', 'Menunggu Konfirmasi')";
             if (mysqli_query($koneksi, $insert_query)) {
                 // Jika berhasil, tampilkan pesan sukses
                 echo '<script>alert("Lamaran Anda telah berhasil dikirim.");</script>';

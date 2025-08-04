@@ -15,6 +15,30 @@ $query_perusahaan = "SELECT * FROM data_perusahaan WHERE username = '$username'"
 $result_perusahaan = mysqli_query($koneksi, $query_perusahaan);
 $data = mysqli_fetch_assoc($result_perusahaan);
 
+// jika lamaran diterima
+if (isset($_POST['terima_lamaran'])) {
+    $id_calon = $_GET['id_calon'];
+    $id_lowongan = $_GET['id_lowongan'];
+    $query_terima = "UPDATE pelamar SET status_lamaran = 'Diterima' WHERE id_calon = '$id_calon' AND id_lowongan = '$id_lowongan'";
+    if (mysqli_query($koneksi, $query_terima)) {
+        echo "<script>alert('Lamaran diterima');</script>";
+        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
+    } else {
+        echo "<script>alert('Gagal menerima lamaran');</script>";
+        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
+    }
+} elseif (isset($_POST['tolak_lamaran'])) {
+    $id_calon = $_POST['id_calon'];
+    $id_lowongan = $_POST['id_lowongan'];
+    $query_tolak = "UPDATE pelamar SET status_lamaran = 'Ditolak' WHERE id_calon = '$id_calon' AND id_lowongan = '$id_lowongan'";
+    if (mysqli_query($koneksi, $query_tolak)) {
+        echo "<script>alert('Lamaran ditolak');</script>";
+        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
+    } else {
+        echo "<script>alert('Gagal menolak lamaran');</script>";
+        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>

@@ -1,9 +1,3 @@
-profile perusahaan
-
-terima pelamar
-
-buat history lamaran di dropdown menu header
-
 Konten Dasboard:
 - lowongan terbaru
 - lowongan terverifikasi
@@ -11,6 +5,8 @@ Konten Dasboard:
 - jumlah lowongan yang sudah terverifikasi
 - pekerjaan berdasarkan pendidikan
 
-batasan pendidikan
+buat data history pelamar di tabel history_pelamar (opsional)
 
-belum terverifikasi
+kalau status pelamar diterima, data pelamar dihapus dari tabel data_calon dan dimasukkan ke tabel pegawai
+
+logo perusahaan di profile_perusahaan.php dan header

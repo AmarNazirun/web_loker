@@ -17,18 +17,33 @@ if (isset($_POST['lamar'])) {
     $id_lowongan = $_POST['id_lowongan'];
 
     // Cek apakah pengguna sudah login
-    if (isset($_SESSION['user_id'])) {
-        $user_id = $_SESSION['user_id'];
-
-        // Simpan lamaran ke database
-        $query = "INSERT INTO lamaran (id_lowongan, id_user) VALUES ('$id_lowongan', '$user_id')";
-        if (mysqli_query($koneksi, $query)) {
-            echo "<script>alert('Lamaran berhasil dikirim!');</script>";
+    if (isset($_SESSION['username'])) {
+        // Ambil ID user dari session
+        $user_id = $data['id_calon'];
+        // Cek apakah user sudah melamar untuk lowongan ini
+        $check_query = "SELECT * FROM pelamar WHERE id_lowongan = '$id_lowongan' AND id_calon = '$user_id'";
+        $check_result = mysqli_query($koneksi, $check_query);
+        if (mysqli_num_rows($check_result) > 0) {
+            // Jika sudah melamar, tampilkan pesan
+            echo '<script>alert("Anda sudah melamar untuk lowongan ini.");</script>';
+            echo '<script>window.location.href = "lowongan_online.php";</script>';
         } else {
-            echo "<script>alert('Gagal mengirim lamaran. Silakan coba lagi.');</script>";
+            // Jika belum melamar, lakukan proses lamaran
+            $insert_query = "INSERT INTO pelamar (tanggal_melamar, id_lowongan, id_calon) VALUES (NOW(), '$id_lowongan', '$user_id')";
+            if (mysqli_query($koneksi, $insert_query)) {
+                // Jika berhasil, tampilkan pesan sukses
+                echo '<script>alert("Lamaran Anda telah berhasil dikirim.");</script>';
+                echo '<script>window.location.href = "histori_lamaran_user.php";</script>';
+            } else {
+                // Jika gagal, tampilkan pesan error
+                echo '<script>alert("Terjadi kesalahan saat mengirim lamaran. Silakan coba lagi.");</script>';
+                echo '<script>window.location.href = "lowongan_online.php";</script>';
+            }
         }
     } else {
-        echo "<script>alert('Anda harus login terlebih dahulu untuk melamar.');</script>";
+        // Jika pengguna belum login, tampilkan pesan
+        echo '<script>alert("Anda harus login terlebih dahulu untuk melamar.");</script>';
+        echo '<script>window.location.href = "../login.php";</script>';
     }
 }
 
@@ -125,10 +140,13 @@ if (isset($_POST['lamar'])) {
                         echo '<p class="card-text"><strong>Tanggal Ditutup:</strong> ' . $row['tanggal_ditutup'] . '</p>';
                         echo '<hr>';
                         // Tampilkan tombol untuk melamar
+                        echo '<div class="d-flex">';
                         echo '<form action="" method="post">';
                         echo '<input type="hidden" name="id_lowongan" value="' . $row['id_lowongan'] . '">';
-                        echo '<input type="submit" name="lamar" class="btn btn-primary" value="Lamar Sekarang">';
+                        echo '<input type="submit" name="lamar" class="btn btn-success" value="Lamar Sekarang">';
                         echo '</form>';
+                        echo '<a href="detail_lowongan.php?id_lowongan=' . $row['id_lowongan'] . '" class="btn btn-primary mx-2">Detail</a>';
+                        echo '</div>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';

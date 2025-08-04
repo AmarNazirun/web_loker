@@ -83,7 +83,6 @@ $data = mysqli_fetch_assoc($result);
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Posisi Lowongan</th>
-                                        <th scope="col">Deskripsi</th>
                                         <th scope="col">Tanggal Dibuka</th>
                                         <th scope="col">Tanggal Ditutup</th>
                                         <th scope="col">Status</th>
@@ -98,20 +97,18 @@ $data = mysqli_fetch_assoc($result);
                                     $no = 1;
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         // status aktif jika tanggal ditutup belum lewat
-                                        $status = (strtotime($row['tanggal_ditutup']) >= time()) ? 'Aktif' : 'Tidak Aktif'; 
+                                        $status_aktif = (strtotime($row['tanggal_ditutup']) >= time()) ? 'Aktif' : 'Tidak Aktif'; 
                                         $jumlah_pelamar = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM pelamar WHERE id_lowongan = '" . $row['id_lowongan'] . "'"));
                                     ?>
                                         <tr>
                                             <th scope="row"><?php echo $no++; ?></th>
                                             <td><?php echo $row['posisi']; ?></td>
-                                            <td><?php echo $row['deskripsi']; ?></td>
                                             <td><?php echo date('d-m-Y', strtotime($row['tanggal_dibuka'])); ?></td>
                                             <td><?php echo date('d-m-Y', strtotime($row['tanggal_ditutup'])); ?></td>
-                                            <td><?php echo $status; ?></td>
+                                            <td><?php echo $row['status']; ?></td>
                                             <td><?php echo $jumlah_pelamar; ?></td>
                                             <td>
                                                 <a href="detail_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-info btn-sm">Detail</a>
-                                                <a href="edit_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-warning btn-sm">Edit</a>
                                                 <a href="hapus_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus lowongan ini?')">Hapus</a>
                                             </td>
                                         </tr>

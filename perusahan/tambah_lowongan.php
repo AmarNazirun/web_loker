@@ -19,7 +19,7 @@ if (isset($_POST['tambah_lowongan'])) {
     $deskripsi = $_POST['deskripsi'];
 
     // query untuk memasukkan data lowongan ke database
-    $query = "INSERT INTO lowongan (posisi, deskripsi, tanggal_dibuka, tanggal_ditutup, id_perusahaan) VALUES ('$judul_lowongan', '$deskripsi', '$tanggal_dibuka', '$tanggal_ditutup', $data[id_perusahaan])";
+    $query = "INSERT INTO lowongan (posisi, deskripsi, tanggal_dibuka, tanggal_ditutup, status, id_perusahaan) VALUES ('$judul_lowongan', '$deskripsi', '$tanggal_dibuka', '$tanggal_ditutup', 'belum terverifikasi', $data[id_perusahaan])";
     $result = mysqli_query($koneksi, $query);
 
     

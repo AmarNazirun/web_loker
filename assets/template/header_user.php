@@ -68,21 +68,16 @@
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                        <i class="bi bi-gear"></i>
-                                        <span>Account Settings</span>
+                                    <a class="dropdown-item d-flex align-items-center" href="histori_lamaran_user.php">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                        <span>Histori Lamaran</span>
                                     </a>
                                 </li>
+                                
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                        <i class="bi bi-question-circle"></i>
-                                        <span>Need Help?</span>
-                                    </a>
-                                </li>
+                                
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

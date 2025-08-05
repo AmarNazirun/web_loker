@@ -32,7 +32,7 @@ if (isset($_POST['ubah'])) {
         // tambahkan ekstensi foto
         $Foto .= '.' . $foto_extension;
         // Set tujuan upload foto
-        $Foto_Upload_Tujuan = '../assets/img/foto_perusahaan/';
+        $Foto_Upload_Tujuan = '../assets/img/logo_perusahaan/';
         // hapus foto lama
         if (file_exists($Foto_Upload_Tujuan . $data['logo'])) {
             unlink($Foto_Upload_Tujuan . $data['logo']);
@@ -149,7 +149,7 @@ if (isset($_POST['simpan_perubahan'])) {
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Foto Profile</h5>
                                     <div class="d-flex align-items-center justify-content-center w-100" style="height: 250px;">
-                                        <img src="../assets/img/foto_pelamar/<?php echo $data['logo']; ?>" alt="Foto Profil" class="img-fluid" style="object-fit: cover; width: 200px; height: 200px;">
+                                        <img src="../assets/img/logo_perusahaan/<?php echo $data['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="object-fit: cover; width: 200px; height: 200px;">
                                     </div>
                                     <div class="mt-3">
                                         <h5 class="mb-1"><?php echo htmlspecialchars($data['nama_perusahaan']); ?></h5>

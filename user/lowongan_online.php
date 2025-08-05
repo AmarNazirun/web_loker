@@ -132,7 +132,7 @@ if (isset($_POST['lamar'])) {
                         echo '<div class="card-header">';
                         echo '<div class="card-body">';
                         echo '<h3>' . $row['posisi'] . '</h3>';
-                        echo '<p>Perusahaan:  <a href="detail_perusahaan.php?id=' . $row['id_perusahaan'] . '">' . $row['nama_perusahaan'] . '</a></p>';
+                        echo '<p>Perusahaan:  <a href="profile_perusahaan.php?id_perusahaan=' . $row['id_perusahaan'] . '">' . $row['nama_perusahaan'] . '</a></p>';
                         echo '<hr>';
                         echo '<p class="card-text"><strong>Deskripsi:</strong></p>';
                         echo '<p class="card-text">' . $row['deskripsi'] . '</p>';

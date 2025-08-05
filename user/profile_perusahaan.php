@@ -6,7 +6,7 @@ $username = $_SESSION['username'];
 
 // ambil data user dan data_calon
 include '../config/koneksi.php';
-$query = "SELECT * FROM user inner join data_perusahaan on user.username = data_perusahaan.username WHERE user.username = '$username'";
+$query = "SELECT * FROM user inner join data_calon on user.username = data_calon.username WHERE user.username = '$username'";
 $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
@@ -145,7 +145,7 @@ if (isset($_POST['simpan_tentang'])) {
 <body>
 
     <!-- ======= Header ======= -->
-    <?php include '../assets/template/header_perusahaan.php'; ?>
+    <?php include '../assets/template/header_user.php'; ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
@@ -154,6 +154,13 @@ if (isset($_POST['simpan_tentang'])) {
     <!-- End Sidebar-->
 
     <main id="main" class="main">
+
+        <?php
+        // Tampilkan data perusahaan
+        $query = "SELECT * FROM data_perusahaan WHERE id_perusahaan = " . $_GET['id_perusahaan'];
+        $result = mysqli_query($koneksi, $query);
+        $data = mysqli_fetch_assoc($result);
+        ?>
 
         <section class="section dashboard">
             <div class="row">

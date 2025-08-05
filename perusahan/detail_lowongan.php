@@ -99,38 +99,6 @@ if (isset($_POST['tambah_lowongan'])) {
             <div class="row">
 
                 <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Detail Lowongan</h5>
-
-                            <!-- Form Tambah Lowongan -->
-                            <form action="" method="POST">
-                                <?php
-                                $query = "SELECT * FROM lowongan WHERE id_lowongan = '" . $_GET['id_lowongan'] . "'";
-                                $result = mysqli_query($koneksi, $query);
-                                $lowongan = mysqli_fetch_assoc($result);
-                                ?>
-                                <div class="row">
-                                    <div class="mb-3 col-4">
-                                        <label for="judul_lowongan" class="form-label">Posisi Lowongan Yang Dicari</label>
-                                        <input type="text" class="form-control" id="judul_lowongan" name="judul_lowongan" value="<?php echo $lowongan['posisi']; ?>" disabled>
-                                    </div>
-                                    <div class="mb-3 col-4"">
-                                        <label for=" tanggal_dibuka" class="form-label">Tanggal Dibuka</label>
-                                        <input type="date" class="form-control" id="tanggal_dibuka" name="tanggal_dibuka" value="<?php echo $lowongan['tanggal_dibuka']; ?>" disabled>
-                                    </div>
-                                    <div class="mb-3 col-4"">
-                                        <label for=" tanggal_ditutup" class="form-label">Tanggal Ditutup</label>
-                                        <input type="date" class="form-control" id="tanggal_ditutup" name="tanggal_ditutup" value="<?php echo $lowongan['tanggal_ditutup']; ?>" disabled>   
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi Lowongan</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="6" disabled><?php echo $lowongan['deskripsi']; ?></textarea>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
 
                     <!-- tabel pelamar -->
                     <div class="card">
@@ -173,6 +141,57 @@ if (isset($_POST['tambah_lowongan'])) {
                             <!-- End tabel pelamar -->
                         </div>
                     </div>
+                    <!-- End tabel pelamar -->
+
+                    <!-- Form Tambah Lowongan -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Detail Lowongan</h5>
+
+                            <!-- Form Tambah Lowongan -->
+                            <form action="" method="POST">
+                                <?php
+                                $query = "SELECT * FROM lowongan WHERE id_lowongan = '" . $_GET['id_lowongan'] . "'";
+                                $result = mysqli_query($koneksi, $query);
+                                $lowongan = mysqli_fetch_assoc($result);
+                                ?>
+                                <div class="row">
+                                    <div class="mb-3 col-4">
+                                        <label for="judul_lowongan" class="form-label">Posisi Lowongan Yang Dicari</label>
+                                        <span class="d-block"><b><?php echo $lowongan['posisi']; ?></b></span>
+                                    </div>
+                                    <div class="mb-3 col-4">
+                                        <label for=" tanggal_dibuka" class="form-label">Jenis Pekerjaan</label>
+                                        <span class="d-block"><b><?php echo $lowongan['jenis_pekerjaan']; ?></b></span>
+                                    </div>
+                                    <div class="mb-3 col-4">
+                                        <label for=" tanggal_dibuka" class="form-label">Pendidikan Minimal</label>
+                                        <span class="d-block"><b><?php echo $lowongan['pendidikan_minimal']; ?></b></span>
+                                    </div>
+                                    <div class="mb-3 col-4">
+                                        <label for=" tanggal_dibuka" class="form-label">Gaji</label>
+                                        <span class="d-block"><b>Rp. <?php echo $lowongan['gaji']; ?> /Bulan</b></span>
+                                    </div>
+                                    <div class="mb-3 col-4">
+                                        <label for=" tanggal_dibuka" class="form-label">Tanggal Dibuka</label>
+                                        <span class="d-block"><b><?php echo date('d M Y', strtotime($lowongan['tanggal_dibuka'])); ?></b></span>
+                                    </div>
+                                    <div class="mb-3 col-4">
+                                        <label for=" tanggal_ditutup" class="form-label">Tanggal Ditutup</label>
+                                        <span class="d-block"><b><?php echo date('d M Y', strtotime($lowongan['tanggal_ditutup'])); ?></b></span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="mb-3">
+                                    <label for="deskripsi" class="form-label"><b>Deskripsi Lowongan</b></label>
+                                    <p id="deskripsi" name="deskripsi">
+                                        <?php echo nl2br(htmlspecialchars($lowongan['deskripsi'])); ?>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
         </section>
 

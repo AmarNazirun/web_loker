@@ -9,6 +9,10 @@ buat data history pelamar di tabel history_pelamar (opsional)
 
 kalau status pelamar diterima, data pelamar dihapus dari tabel data_calon dan dimasukkan ke tabel pegawai
 
-rubah tampilan detail_lowongan.php
-- tampilkan profile perusahaan seperti di profile_perusahaan.php
-- dibawahnya tampilkan detail lowongannya
+tambah fitur hapus:
+- hapus foto user (diuser profile)
+- hapus foto perusahaan (di profile perusahaan)
+- tolak lowongan (di detail lowongan & di verifikasi lowongan)
+- hapus lowongan (untuk perusahaan)
+- tolak pelamar (untuk perusahaan)
+- jika lowongan sudah melewati tanggal ditutup, maka lowongan otomatis dihapus dan status pelamar otomatis ditolak

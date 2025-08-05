@@ -6,36 +6,22 @@ $username = $_SESSION['username'];
 
 // ambil data user dan data_calon
 include '../config/koneksi.php';
-$query = "SELECT * FROM user inner join data_perusahaan on user.username = data_perusahaan.username WHERE user.username = '$username'";
+$query = "SELECT * FROM user inner join admin_disnaker on user.username = admin_disnaker.username WHERE user.username = '$username'";
 $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
-// cek apakah tombol tambah lowongan sudah ditekan
-if (isset($_POST['tambah_lowongan'])) {
-    // ambil data dari form
-    $judul_lowongan = $_POST['judul_lowongan'];
-    $pendidikan_minimal = $_POST['pendidikan_minimal'];
-    $jenis_pekerjaan = $_POST['jenis_pekerjaan'];
-    $gaji = $_POST['gaji'];
-    $tanggal_dibuka = $_POST['tanggal_dibuka'];
-    $tanggal_ditutup = $_POST['tanggal_ditutup'];
-    $deskripsi = $_POST['deskripsi'];
-
-    // query untuk memasukkan data lowongan ke database
-    $query = "INSERT INTO lowongan (posisi, pendidikan_minimal, jenis_pekerjaan, gaji, tanggal_dibuka, tanggal_ditutup, deskripsi, status, id_perusahaan)
-                VALUES ('$judul_lowongan', '$pendidikan_minimal', '$jenis_pekerjaan', '$gaji', '$tanggal_dibuka', '$tanggal_ditutup', '$deskripsi', 'Belum Terverifikasi', $data[id_perusahaan])";
-    $result = mysqli_query($koneksi, $query);
-
-    // cek apakah query berhasil
-    if ($result) {
-        echo "<script>alert('Lowongan berhasil ditambahkan!'); window.location.href='lowongan_saya.php';</script>";
+// cek apakah tombol verifikasi sudah ditekan
+if (isset($_POST['verifikasi'])) {
+    $id_lowongan = $_POST['id_lowongan'];
+    // update status lowongan menjadi terverifikasi
+    $update_query = "UPDATE lowongan SET status = 'Terverifikasi' WHERE id_lowongan = $id_lowongan";
+    if (mysqli_query($koneksi, $update_query)) {
+        echo "<script>alert('Lowongan berhasil diverifikasi!');</script>";
+        echo "<script>window.location.href='lowongan_online.php';</script>";
     } else {
-        echo "<script>alert('Gagal menambahkan lowongan. Silakan coba lagi.'); window.location.href='tambah_lowongan.php';</script>";
+        echo "<script>alert('Gagal memverifikasi lowongan!');</script>";
+        echo "<script>window.location.href='verifikasi_lowongan.php';</script>";
     }
-} elseif (isset($_POST['batal'])) {
-    // jika tombol batal ditekan, redirect ke halaman lowongan
-    header("Location: lowongan.php");
-    exit();
 }
 
 ?>
@@ -87,7 +73,7 @@ if (isset($_POST['tambah_lowongan'])) {
 <body>
 
     <!-- ======= Header ======= -->
-    <?php include '../assets/template/header_perusahaan.php'; ?>
+    <?php include '../assets/template/header_disnaker.php'; ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
@@ -101,66 +87,59 @@ if (isset($_POST['tambah_lowongan'])) {
             <div class="row">
 
                 <div class="col-lg-12">
+
+                    <!-- Form Tambah Lowongan -->
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Tambah Lowongan</h5>
+                            <h5 class="card-title">Detail Lowongan</h5>
 
                             <!-- Form Tambah Lowongan -->
                             <form action="" method="POST">
+                                <?php
+                                $query = "SELECT * FROM lowongan WHERE id_lowongan = '" . $_GET['id_lowongan'] . "'";
+                                $result = mysqli_query($koneksi, $query);
+                                $lowongan = mysqli_fetch_assoc($result);
+                                ?>
                                 <div class="row">
                                     <div class="mb-3 col-4">
                                         <label for="judul_lowongan" class="form-label">Posisi Lowongan Yang Dicari</label>
-                                        <input type="text" class="form-control" id="judul_lowongan" name="judul_lowongan" required>
+                                        <span class="d-block"><b><?php echo $lowongan['posisi']; ?></b></span>
                                     </div>
                                     <div class="mb-3 col-4">
                                         <label for=" tanggal_dibuka" class="form-label">Jenis Pekerjaan</label>
-                                        <select class="form-select" id="jenis_pekerjaan" name="jenis_pekerjaan" required>
-                                            <option value="" disabled selected>Pilih Jenis Pekerjaan</option>
-                                            <option value="Full Time">Full Time</option>
-                                            <option value="Part Time">Part Time</option>
-                                            <option value="Magang">Magang</option>
-                                            <option value="Remote">Remote</option>
-                                        </select>
+                                        <span class="d-block"><b><?php echo $lowongan['jenis_pekerjaan']; ?></b></span>
                                     </div>
                                     <div class="mb-3 col-4">
                                         <label for=" tanggal_dibuka" class="form-label">Pendidikan Minimal</label>
-                                        <select class="form-select" id="pendidikan_minimal" name="pendidikan_minimal" required>
-                                            <option value="" disabled selected>Pilih Pendidikan Minimal</option>
-                                            <option value="Tidak Ada">Tidak Ada</option>
-                                            <option value="SMA">SMA/SMK</option>
-                                            <option value="D3">Diploma 3</option>
-                                            <option value="S1">Sarjana (S1)</option>
-                                            <option value="S2">Magister (S2)</option>
-                                            <option value="S3">Doktor (S3)</option>
-                                        </select>
+                                        <span class="d-block"><b><?php echo $lowongan['pendidikan_minimal']; ?></b></span>
                                     </div>
                                     <div class="mb-3 col-4">
                                         <label for=" tanggal_dibuka" class="form-label">Gaji</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control" id="gaji" name="gaji" placeholder="Masukkan gaji" required>
-                                            <span class="input-group-text">/bulan</span>
-                                        </div>
+                                        <span class="d-block"><b>Rp. <?php echo $lowongan['gaji']; ?> /Bulan</b></span>
                                     </div>
                                     <div class="mb-3 col-4">
                                         <label for=" tanggal_dibuka" class="form-label">Tanggal Dibuka</label>
-                                        <input type="date" class="form-control" id="tanggal_dibuka" name="tanggal_dibuka" required>
+                                        <span class="d-block"><b><?php echo date('d M Y', strtotime($lowongan['tanggal_dibuka'])); ?></b></span>
                                     </div>
                                     <div class="mb-3 col-4">
                                         <label for=" tanggal_ditutup" class="form-label">Tanggal Ditutup</label>
-                                        <input type="date" class="form-control" id="tanggal_ditutup" name="tanggal_ditutup" required>
+                                        <span class="d-block"><b><?php echo date('d M Y', strtotime($lowongan['tanggal_ditutup'])); ?></b></span>
                                     </div>
                                 </div>
+                                <hr>
                                 <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi Lowongan</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="10" required></textarea>
+                                    <label for="deskripsi" class="form-label"><b>Deskripsi Lowongan</b></label>
+                                    <p id="deskripsi" name="deskripsi">
+                                        <?php echo nl2br(htmlspecialchars($lowongan['deskripsi'])); ?>
+                                    </p>
                                 </div>
                                 <hr>
-                                <input type="submit" class="btn btn-primary" name="tambah_lowongan" value="Tambah Lowongan">
-                                <input type="submit" class="btn btn-danger" name="batal" value="Batal">
+                                <input type="submit" class="btn btn-success" name="verifikasi_lowongan" value="Verifikasi Lowongan">
+                                <input type="submit" class="btn btn-danger" name="tolak_lowongan" value="Tolak Lowongan">
                             </form>
                         </div>
                     </div>
+
                 </div>
         </section>
 

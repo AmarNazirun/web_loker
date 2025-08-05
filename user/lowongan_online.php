@@ -127,7 +127,7 @@ if (isset($_POST['lamar'])) {
                 ?>
                     <!-- card lowongan -->
                     <div class="col-lg-4 col-md-6 mb-4">
-                        <a href="detail_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="text-decoration-none">
+                        <a href="detail_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>&id_perusahaan=<?php echo $row['id_perusahaan']; ?>" class="text-decoration-none">
                             <div class="card info-card sales-card">
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo $row['posisi']; ?></h5>

@@ -9,17 +9,6 @@ buat data history pelamar di tabel history_pelamar (opsional)
 
 kalau status pelamar diterima, data pelamar dihapus dari tabel data_calon dan dimasukkan ke tabel pegawai
 
-rubah tampilan profile_perusahaan.php
-- tampilkan logo perusahaan
-- tambah deskripsi perusahaan
-
-rubah tampilan lowongan_online.php
-- tampilkan logo perusahaan
-- tampilkan nama perusahaan
-- tampilkan posisi lowongan
-- tampilkan sedikit deskripsi lowongan
-- klik tombol "Lihat Lowongan" untuk melihat detail lowongan
-
 rubah tampilan detail_lowongan.php
 - tampilkan profile perusahaan seperti di profile_perusahaan.php
 - dibawahnya tampilkan detail lowongannya

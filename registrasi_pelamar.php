@@ -6,15 +6,12 @@ include 'config/koneksi.php';
 if (isset($_POST['register'])) {
     // Ambil data dari form
     $Nama_Lengkap = $_POST['Nama_Lengkap'];
-    $Posisi_Lamar = $_POST['Posisi_Lamar'];
-    $Telepon_Rumah = $_POST['Telepon_Rumah'];
     $Handphone = $_POST['Handphone'];
-    $Tanggal_Lahir = $_POST['Tanggal_Lahir'];
     $Tempat_Lahir = $_POST['Tempat_Lahir'];
+    $Tanggal_Lahir = $_POST['Tanggal_Lahir'];
     $Jenis_Kelamin = $_POST['Jenis_Kelamin'];
     $Agama = $_POST['Agama'];
     $Status_Kawin = $_POST['Status_Kawin'];
-    $Golongan_Darah = $_POST['Golongan_Darah'];
     $No_KTP = $_POST['No_KTP'];
     $Username = $_POST['Username'];
     $Password = $_POST['Password'];
@@ -37,44 +34,62 @@ if (isset($_POST['register'])) {
             // ubah password menjadi hash
             $Password_Hash = password_hash($Password, PASSWORD_DEFAULT);
 
-            // pisahkan nama file dan ekstensi
-            $foto_extension = pathinfo($Foto, PATHINFO_EXTENSION);
-            // Validasi ekstensi foto
-            $valid_extensions = array('jpg', 'jpeg', 'png');
-            // Cek apakah ekstensi foto valid
-            $foto_extension = strtolower($foto_extension); // Ubah ekstensi menjadi huruf kecil
+            // Cek apakah ada file foto yang diupload
+            if (!empty($Foto)) {
 
-            // Cek apakah ekstensi foto valid
-            if (in_array($foto_extension, $valid_extensions)) {
-                // hapus nama foto yang ada menjadi kosong
-                $Foto = '';
-                // buat nama foto baru dengan username
-                $Foto = $Username;
-                // tambahkan ekstensi foto
-                $Foto .= '.' . $foto_extension;
-                // Set tujuan upload foto
-                $Foto_Upload_Tujuan = 'assets/img/foto_pelamar/';
-                // simpan foto dengan nama baru
-                $Foto_Upload_Tujuan .= basename($Foto);
-                if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
-                    // Query untuk memasukkan data ke tabel user
-                    $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
-                    // Query untuk memasukkan data ke tabel data_calon
-                    $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, posisi_lamar, telepon_rumah, handphone, tanggal_lahir, tempat_lahir, jenis_kelamin, agama, status_kawin, golongan_darah, no_ktp, foto, username) VALUES ('$Nama_Lengkap', '$Posisi_Lamar', '$Telepon_Rumah', '$Handphone', '$Tanggal_Lahir', '$Tempat_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$Golongan_Darah', '$No_KTP', '$Foto', '$Username')");
-                    // Cek apakah query berhasil
-                    if ($query_data_calon && $query_user) {
-                        echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";
-                        echo "<script>window.location.href='login.php';</script>";
+                // pisahkan nama file dan ekstensi
+                $foto_extension = pathinfo($Foto, PATHINFO_EXTENSION);
+                // Validasi ekstensi foto
+                $valid_extensions = array('jpg', 'jpeg', 'png');
+                // Cek apakah ekstensi foto valid
+                $foto_extension = strtolower($foto_extension); // Ubah ekstensi menjadi huruf kecil
+
+                // Cek apakah ekstensi foto valid
+                if (in_array($foto_extension, $valid_extensions)) {
+                    // hapus nama foto yang ada menjadi kosong
+                    $Foto = '';
+                    // buat nama foto baru dengan username
+                    $Foto = $Username;
+                    // tambahkan ekstensi foto
+                    $Foto .= '.' . $foto_extension;
+                    // Set tujuan upload foto
+                    $Foto_Upload_Tujuan = 'assets/img/foto_pelamar/';
+                    // simpan foto dengan nama baru
+                    $Foto_Upload_Tujuan .= basename($Foto);
+                    if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
+                        // Query untuk memasukkan data ke tabel user
+                        $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
+                        // Query untuk memasukkan data ke tabel data_calon
+                        $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, no_ktp, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$No_KTP', '$Foto', '$Username')");
+                        // Cek apakah query berhasil
+                        if ($query_data_calon && $query_user) {
+                            echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";
+                            echo "<script>window.location.href='login.php';</script>";
+                        } else {
+                            // Jika gagal, hapus file foto yang sudah diupload
+                            unlink($Foto_Upload_Tujuan);
+                            echo "<script>alert('Registrasi gagal! Silakan coba lagi.');</script>";
+                        }
                     } else {
-                        // Jika gagal, hapus file foto yang sudah diupload
-                        unlink($Foto_Upload_Tujuan);
-                        echo "<script>alert('Registrasi gagal! Silakan coba lagi.');</script>";
+                        echo "<script>alert('Gagal mengupload foto! Pastikan file foto valid.');</script>";
                     }
                 } else {
-                    echo "<script>alert('Gagal mengupload foto! Pastikan file foto valid.');</script>";
+                    echo "<script>alert('Format foto tidak valid! Hanya diperbolehkan JPG, JPEG, atau PNG.');</script>";
                 }
             } else {
-                echo "<script>alert('Format foto tidak valid! Hanya diperbolehkan JPG, JPEG, atau PNG.');</script>";
+                // Jika tidak ada foto yang diupload, gunakan foto default
+                $Foto = 'default.png';
+                // Query untuk memasukkan data ke tabel user
+                $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
+                // Query untuk memasukkan data ke tabel data_perusahaan
+                $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, no_ktp, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$No_KTP', '$Foto', '$Username')");
+                // Cek apakah query berhasil
+                if ($query_data_calon && $query_user) {
+                    echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";
+                    echo "<script>window.location.href='login.php';</script>";
+                } else {
+                    echo "<script>alert('Registrasi gagal! Silakan coba lagi.');</script>";
+                }
             }
         }
     }
@@ -137,7 +152,7 @@ if (isset($_POST['register'])) {
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Registrasi Perusahaan</h5>
+                                        <h5 class="card-title text-center pb-0 fs-4">Registrasi Pelamar Pekerjaan</h5>
                                         <p class="text-center small">Enter your personal details to create account</p>
                                     </div>
 
@@ -149,32 +164,11 @@ if (isset($_POST['register'])) {
                                             <div class="invalid-feedback">Masukkan Nama Lengkap Anda</div>
                                         </div>
 
-                                        <!-- posisi lamar -->
-                                        <div class="col-md-4">
-                                            <label for="Posisi_Lamar" class="form-label">Posisi Lamar</label>
-                                            <input type="text" name="Posisi_Lamar" class="form-control" id="Posisi_Lamar" required>
-                                            <div class="invalid-feedback">Masukkan Posisi yang Dilamar</div>
-                                        </div>
-
-                                        <!-- telepon rumah -->
-                                        <div class="col-md-4">
-                                            <label for="Telepon_Rumah" class="form-label">Telepon Rumah</label>
-                                            <input type="text" name="Telepon_Rumah" class="form-control" id="Telepon_Rumah" required>
-                                            <div class="invalid-feedback">Masukkan Nomor Telepon Rumah Anda</div>
-                                        </div>
-
                                         <!-- handphone -->
                                         <div class="col-md-4">
-                                            <label for="Handphone" class="form-label">Handphone</label>
+                                            <label for="Handphone" class="form-label">No HP</label>
                                             <input type="text" name="Handphone" class="form-control" id="Handphone" required>
                                             <div class="invalid-feedback">Masukkan Nomor Handphone Anda</div>
-                                        </div>
-
-                                        <!-- tanggal lahir -->
-                                        <div class="col-md-4">
-                                            <label for="Tanggal_Lahir" class="form-label">Tanggal Lahir</label>
-                                            <input type="date" name="Tanggal_Lahir" class="form-control" id="Tanggal_Lahir" required>
-                                            <div class="invalid-feedback">Masukkan Tanggal Lahir Anda</div>
                                         </div>
 
                                         <!-- tempat lahir -->
@@ -182,6 +176,13 @@ if (isset($_POST['register'])) {
                                             <label for="Tempat_Lahir" class="form-label">Tempat Lahir</label>
                                             <input type="text" name="Tempat_Lahir" class="form-control" id="Tempat_Lahir" required>
                                             <div class="invalid-feedback">Masukkan Tempat Lahir Anda</div>
+                                        </div>
+
+                                        <!-- tanggal lahir -->
+                                        <div class="col-md-4">
+                                            <label for="Tanggal_Lahir" class="form-label">Tanggal Lahir</label>
+                                            <input type="date" name="Tanggal_Lahir" class="form-control" id="Tanggal_Lahir" required>
+                                            <div class="invalid-feedback">Masukkan Tanggal Lahir Anda</div>
                                         </div>
 
                                         <!-- jenis kelamin -->
@@ -222,31 +223,16 @@ if (isset($_POST['register'])) {
                                             <div class="invalid-feedback">Pilih Status Kawin Anda</div>
                                         </div>
 
-                                        <!-- golongan darah -->
-                                        <div class="col-md-4">
-                                            <label for="Golongan_Darah" class="form-label">Golongan Darah</label>
-                                            <select class="form-select" name="Golongan_Darah" id="Golongan_Darah" required>
-                                                <option value="" disabled selected>Pilih Golongan Darah</option>
-                                                <option value="A">A</option>
-                                                <option value="B">B</option>
-                                                <option value="AB">AB</option>
-                                                <option value="O">O</option>
-                                            </select>
-                                            <div class="invalid-feedback">Pilih Golongan Darah Anda</div>
-                                        </div>
-
                                         <!-- no ktp -->
                                         <div class="col-md-4">
                                             <label for="No_KTP" class="form-label">Nomor KTP</label>
-                                            <input type="text" name="No_KTP" class="form-control" id="No_KTP" required>
-                                            <div class="invalid-feedback">Masukkan Nomor KTP Anda</div>
+                                            <input type="text" name="No_KTP" class="form-control" id="No_KTP">
                                         </div>
 
                                         <!-- foto -->
                                         <div class="col-md-4">
                                             <label for="Foto" class="form-label">Foto</label>
-                                            <input type="file" name="Foto" class="form-control" id="Foto" accept="image/*" required>
-                                            <div class="invalid-feedback">Unggah Foto Anda</div>
+                                            <input type="file" name="Foto" class="form-control" id="Foto" accept="image/*">
                                         </div>
 
                                         <!-- username -->

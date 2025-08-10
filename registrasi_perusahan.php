@@ -8,19 +8,26 @@ if (isset($_SESSION['login'])) {
     exit;
 }
 
-if (isset($_POST['daftar'])) {
+if (isset($_POST['register'])) {
     $nama_perusahaan = $_POST['Nama_Perusahaan'];
     $alamat = $_POST['Alamat'];
     $telepon = $_POST['Telepon'];
-    $website = $_POST['website'];
-    $contact_person = $_POST['contact_person'];
     $email = $_POST['email'];
-    $username = $_POST['username'];
-    $Password = $_POST['password'];
-    $Konfirmasi_Password = $_POST['konfirm_password'];
+    $facebook = $_POST['facebook'];
+    $instagram = $_POST['instagram'];
+    $x_perusahaan = $_POST['x'];
+    $website = $_POST['website'];
+    $Foto = $_FILES['Foto']['name'];
+    $Foto_Tipe = $_FILES['Foto']['type'];
+    $Foto_Sumber = $_FILES['Foto']['tmp_name'];
+    $Foto_Upload_Tujuan = 'assets/img/logo_perusahaan/';
+    $Username = $_POST['Username'];
+    $Password = $_POST['Password'];
+    $Konfirmasi_Password = $_POST['Konfirmasi_Password'];
+    $Foto_Upload_Tujuan .= basename($Foto);
 
-    // cek username
-    $cek_username = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$username'");
+    // cek username sudah ada?
+    $cek_username = mysqli_query($koneksi, "SELECT * FROM user WHERE username='$Username'");
     if (mysqli_num_rows($cek_username) > 0) {
         echo "<script>alert('Username sudah ada! Silakan gunakan username lain.');</script>";
     } else {
@@ -28,19 +35,65 @@ if (isset($_POST['daftar'])) {
         if ($Password !== $Konfirmasi_Password) {
             echo "<script>alert('Password dan Konfirmasi Password tidak sama!');</script>";
         } else {
-        // ubah password menjadi hash
+            // ubah password menjadi hash
             $Password_Hash = password_hash($Password, PASSWORD_DEFAULT);
 
-            // Query untuk memasukkan data ke tabel user
-            $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$username', '$Password_Hash', 'perusahaan')");
-            // Query untuk memasukkan data ke tabel data_perusahaan
-            $query_data_perusahaan = mysqli_query($koneksi, "INSERT INTO data_perusahaan (nama_perusahaan, alamat, telepon, website, contact_person, email, username) VALUES ('$nama_perusahaan', '$alamat', '$telepon', '$website', '$contact_person', '$email', '$username')");
-            // Cek apakah query berhasil
-            if ($query_user && $query_data_perusahaan) {
-                echo "<script>alert('Registrasi Perusahaan Berhasil! Silakan login.'); window.location.href='login.php';</script>";
-            }
-            else {
-                echo "<script>alert('Registrasi Perusahaan Gagal!');</script>";
+            // Cek apakah ada file foto yang diupload
+            if (!empty($Foto)) {
+                
+                // pisahkan nama file dan ekstensi
+                $foto_extension = pathinfo($Foto, PATHINFO_EXTENSION);
+                // Validasi ekstensi foto
+                $valid_extensions = array('jpg', 'jpeg', 'png');
+                // Cek apakah ekstensi foto valid
+                $foto_extension = strtolower($foto_extension); // Ubah ekstensi menjadi huruf kecil
+
+                // Cek apakah ekstensi foto valid
+                if (in_array($foto_extension, $valid_extensions)) {
+                    // hapus nama foto yang ada menjadi kosong
+                    $Foto = '';
+                    // buat nama foto baru dengan username
+                    $Foto = $Username;
+                    // tambahkan ekstensi foto
+                    $Foto .= '.' . $foto_extension;
+                    // Set tujuan upload foto
+                    $Foto_Upload_Tujuan = 'assets/img/logo_perusahaan/';
+                    // simpan foto dengan nama baru
+                    $Foto_Upload_Tujuan .= basename($Foto);
+                    if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
+                        // Query untuk memasukkan data ke tabel user
+                        $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','perusahaan')");
+                        // Query untuk memasukkan data ke tabel data_perusahaan
+                        $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_perusahaan (nama_perusahaan, alamat, telepon, email, facebook, instagram, x, website, logo, username) VALUES ('$nama_perusahaan', '$alamat', '$telepon', '$email', '$facebook', '$instagram', '$x_perusahaan', '$website', '$Foto', '$Username')");
+                        // Cek apakah query berhasil
+                        if ($query_data_calon && $query_user) {
+                            echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";
+                            echo "<script>window.location.href='login.php';</script>";
+                        } else {
+                            // Jika gagal, hapus file foto yang sudah diupload
+                            unlink($Foto_Upload_Tujuan);
+                            echo "<script>alert('Registrasi gagal! Silakan coba lagi.');</script>";
+                        }
+                    } else {
+                        echo "<script>alert('Gagal mengupload foto! Pastikan file foto valid.');</script>";
+                    }
+                } else {
+                    echo "<script>alert('Format foto tidak valid! Hanya diperbolehkan JPG, JPEG, atau PNG.');</script>";
+                }
+            } else {
+                // Jika tidak ada foto yang diupload, gunakan foto default
+                $Foto = 'default.png';
+                // Query untuk memasukkan data ke tabel user
+                $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','perusahaan')");
+                // Query untuk memasukkan data ke tabel data_perusahaan
+                $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_perusahaan (nama_perusahaan, alamat, telepon, email, facebook, instagram, x, website, logo, username) VALUES ('$nama_perusahaan', '$alamat', '$telepon', '$email', '$facebook', '$instagram', '$x_perusahaan', '$website', '$Foto', '$Username')");
+                // Cek apakah query berhasil
+                if ($query_data_calon && $query_user) {
+                    echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";
+                    echo "<script>window.location.href='login.php';</script>";
+                } else {
+                    echo "<script>alert('Registrasi gagal! Silakan coba lagi.');</script>";
+                }
             }
         }
     }
@@ -98,7 +151,7 @@ if (isset($_POST['daftar'])) {
             <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                 <div class="container">
                     <div class="row justify-content-center">
-                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
 
                             <div class="card mb-3">
 
@@ -109,68 +162,96 @@ if (isset($_POST['daftar'])) {
                                         <p class="text-center small">Enter your personal details to create account</p>
                                     </div>
 
-                                    <form action="" method="POST" class="row g-3 needs-validation" novalidate>
-                                        <div class="col-12">
-                                            <label for="yourName" class="form-label">Nama Perusahaan</label>
-                                            <input type="text" name="Nama_Perusahaan" class="form-control" id="yourName" required>
-                                            <div class="invalid-feedback">Masukkan Nama Perusahan</div>
+                                    <form class="row g-3 needs-validation" method="POST" action="" enctype="multipart/form-data" novalidate>
+                                        <!-- nama lengkap -->
+                                        <div class="col-md-4">
+                                            <label for="Nama_Lengkap" class="form-label">Nama Perusahaan</label>
+                                            <input type="text" name="Nama_Perusahaan" class="form-control" id="Nama_Perusahaan" required>
+                                            <div class="invalid-feedback">Masukkan Nama Lengkap Anda</div>
                                         </div>
 
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Alamat</label>
-                                            <input type="text" name="Alamat" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback">Masukkan Alamat Perusahaan</div> 
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Telepon</label>
-                                            <input type="text" name="Telepon" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback">Masukkan Nomor Telepon Perusahaan</div>
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Website</label>
-                                            <input type="text" name="website" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback">Masukkan Website Perusahaan</div>
-                                        </div>
-                                        
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">contact Person</label>
-                                            <input type="text" name="contact_person" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback"> Masukkan Contact Person Perusahaan</div>
+                                        <!-- posisi lamar -->
+                                        <div class="col-md-4">
+                                            <label for="Posisi_Lamar" class="form-label">Alamat Perusahaan</label>
+                                            <input type="text" name="Alamat" class="form-control" id="Alamat" required>
+                                            <div class="invalid-feedback">Masukkan Alamat Perusahaan Anda</div>
                                         </div>
 
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Email</label>
-                                            <input type="email" name="email" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback"> Masukkan Email Perusahaan</div>
+                                        <!-- handphone -->
+                                        <div class="col-md-4">
+                                            <label for="Handphone" class="form-label">No Telephone Perusahaan</label>
+                                            <input type="text" name="Telepon" class="form-control" id="Telepon" required>
+                                            <div class="invalid-feedback">Masukkan Nomor Handphone Anda</div>
                                         </div>
 
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Username Perusahaan</label>
-                                            <input type="text" name="username" class="form-control" id="yourPassword" required>
-                                            <div class="invalid-feedback"> Masukkan Username Perusahaan</div>
+                                        <!-- tanggal lahir -->
+                                        <div class="col-md-4">
+                                            <label for="Tanggal_Lahir" class="form-label">Email Perusahaan</label>
+                                            <input type="email" name="email" class="form-control" id="email" required>
                                         </div>
 
-                                        <div class="col-12">
-                                            <label for="yourEmail" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control" id="yourEmail" required>
-                                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                        <!-- tempat lahir -->
+                                        <div class="col-md-4">
+                                            <label for="Tempat_Lahir" class="form-label">Facebook Perusahaan</label>
+                                            <input type="text" name="facebook" class="form-control" id="facebook">
                                         </div>
 
-                                        <div class="col-12">
-                                            <label for="yourUsername" class="form-label">Konfirmasi Password</label>
-                                            <div class="input-group has-validation">
-                                                <input type="password" name="konfirm_password" class="form-control" id="yourUsername" required>
-                                                <div class="invalid-feedback">Please choose a username.</div>
-                                            </div>
+                                        <!-- jenis kelamin -->
+                                        <div class="col-md-4">
+                                            <label for="Jenis_Kelamin" class="form-label">Instagram Perusahaan</label>
+                                            <input type="text" name="instagram" class="form-control" id="instagram">
                                         </div>
-    
-                                        <div class="col-12">
-                                            <input type="submit" name="daftar" class="btn btn-primary w-100" value="Register">
+
+                                        <!-- Agama -->
+                                        <div class="col-md-4">
+                                            <label for="Agama" class="form-label">X Perusahaan</label>
+                                            <input type="text" name="x" class="form-control" id="x_perusahaan">
                                         </div>
+
+                                        <!-- telepon rumah -->
+                                        <div class="col-md-4">
+                                            <label for="Telepon_Rumah" class="form-label">Website Perusahaan</label>
+                                            <input type="text" name="website" class="form-control" id="website">
+                                        </div>
+
+                                        <!-- foto -->
+                                        <div class="col-md-4">
+                                            <label for="Foto" class="form-label">Logo Perusahaan</label>
+                                            <input type="file" name="Foto" class="form-control" id="Foto" accept="image/*">
+                                        </div>
+
+                                        <!-- username -->
+                                        <div class="col-md-4">
+                                            <label for="Username" class="form-label">Username</label>
+                                            <input type="text" name="Username" class="form-control" id="Username" required>
+                                            <div class="invalid-feedback">Masukkan Username Anda</div>
+                                        </div>
+
+                                        <!-- password -->
+                                        <div class="col-md-4">
+                                            <label for="Password" class="form-label">Password</label>
+                                            <input type="password" name="Password" class="form-control" id="Password" required>
+                                            <div class="invalid-feedback">Masukkan Password Anda</div>
+                                        </div>
+
+                                        <!-- konfirmasi password -->
+                                        <div class="col-md-4">
+                                            <label for="Konfirmasi_Password" class="form-label">Konfirmasi Password</label>
+                                            <input type="password" name="Konfirmasi_Password" class="form-control" id="Konfirmasi_Password" required>
+                                            <div class="invalid-feedback">Konfirmasi Password Anda</div>
+                                        </div>
+
+                                        <!-- submit -->
                                         <div class="col-12">
-                                            <p class="small mb-0">Already have an account? <a href="login.php">Log in</a></p>
+                                            <input type="submit" name="register" class="btn btn-primary w-100" value="Daftar">
+                                        </div>
+                                        <!-- reset -->
+                                        <div class="col-12">
+                                            <button class="btn btn-secondary w-100" type="reset">Reset</button>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <p class="small mb-0">Sudah Punya Akun? <a href="login.php">Login</a></p>
                                         </div>
                                     </form>
 

@@ -33,12 +33,17 @@ if (isset($_POST['ubah'])) {
         $Foto .= '.' . $foto_extension;
         // Set tujuan upload foto
         $Foto_Upload_Tujuan = '../assets/img/logo_perusahaan/';
-        // hapus foto lama
-        if (file_exists($Foto_Upload_Tujuan . $data['logo'])) {
-            unlink($Foto_Upload_Tujuan . $data['logo']);
+        
+        // cek apakah user menggunakan foto default
+        if ($data['foto'] != 'default.png') {
+            // jika tidak, hapus foto lama
+            $Foto_Lama = '../assets/img/logo_perusahaan/' . $data['foto'];
+            if (file_exists($Foto_Lama)) {
+                unlink($Foto_Lama);
+            }
         }
         // simpan foto dengan nama baru
-        $Foto_Upload_Tujuan .= basename($Foto);
+        $Foto_Upload_Tujuan .= $Foto;
         if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
             // Update foto di database
             $query_update = "UPDATE data_perusahaan SET logo='$Foto' WHERE username='$Username'";
@@ -54,6 +59,24 @@ if (isset($_POST['ubah'])) {
         }
     } else {
         echo "<script>alert('Format foto tidak valid! Hanya diperbolehkan JPG, JPEG, atau PNG.');</script>";
+    }
+}
+
+// jika user mau menghapus foto
+if (isset($_POST['hapus'])) {
+    // Ubah foto menjadi default.png
+    $Foto = 'default.png';
+    // Update foto di database
+    $query_update = "UPDATE data_perusahaan SET logo='$Foto' WHERE username='$Username'";
+    if (mysqli_query($koneksi, $query_update)) {
+        // Hapus foto lama jika ada
+        $Foto_Upload_Tujuan = '../assets/img/logo_perusahaan/' . $data['foto'];
+        if (file_exists($Foto_Upload_Tujuan)) {
+            unlink($Foto_Upload_Tujuan);
+        } 
+        echo "<script>alert('Foto berhasil dihapus');</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus foto! Silakan coba lagi.');</script>";
     }
 }
 
@@ -165,7 +188,7 @@ if (isset($_POST['simpan_tentang'])) {
                         <div class="col-md-4 mb-3">
                             <div class="card h-100 d-flex align-items-center justify-content-center">
                                 <div class="card-body text-center">
-                                    <h5 class="card-title">Foto Profile</h5>
+                                    <h5 class="card-title">Logo Perusahaan</h5>
                                     <div class="d-flex align-items-center justify-content-center w-100" style="height: 250px;">
                                         <img src="../assets/img/logo_perusahaan/<?php echo $data['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="object-fit: cover; width: 200px; height: 200px;">
                                     </div>
@@ -193,7 +216,7 @@ if (isset($_POST['simpan_tentang'])) {
                         <div class="col-md-8 mb-3">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title">Profile</h5>
+                                    <h5 class="card-title">Profile Perusahaan</h5>
                                     <form action="" method="post">
                                         <div class="row mb-2 align-items-center">
                                             <label class="col-sm-4 col-form-label"><b>Username</b></label>

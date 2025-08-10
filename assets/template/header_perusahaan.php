@@ -51,6 +51,7 @@
                         <div class="nav-item dropdown mx-auto d-flex align-items-center justify-content-center">
 
                             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" style="margin: 0 auto;">
+                                <img src="../assets/img/logo_perusahaan/<?php echo $data['logo']?>" alt="Profile" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                 <b><span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $data['nama_perusahaan']; ?></span></b>
                             </a><!-- End Profile Image Icon -->
 

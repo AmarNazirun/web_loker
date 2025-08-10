@@ -9,8 +9,6 @@ buat data history pelamar di tabel history_pelamar (opsional)
 kalau status pelamar diterima, data pelamar dihapus dari tabel data_calon dan dimasukkan ke tabel pegawai
 
 tambah fitur hapus:
-- hapus foto user (diuser profile)
-- hapus foto perusahaan (di profile perusahaan)
 - tolak lowongan (di detail lowongan & di verifikasi lowongan)
 - hapus lowongan (untuk perusahaan)
 - tolak pelamar (untuk perusahaan)

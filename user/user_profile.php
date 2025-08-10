@@ -33,12 +33,17 @@ if (isset($_POST['ubah'])) {
         $Foto .= '.' . $foto_extension;
         // Set tujuan upload foto
         $Foto_Upload_Tujuan = '../assets/img/foto_pelamar/';
-        // hapus foto lama
-        if (file_exists($Foto_Upload_Tujuan . $data['foto'])) {
-            unlink($Foto_Upload_Tujuan . $data['foto']);
+
+        // cek apakah user menggunakan foto default
+        if ($data['foto'] != 'default.png') {
+            // jika tidak, hapus foto lama
+            $Foto_Lama = '../assets/img/foto_pelamar/' . $data['foto'];
+            if (file_exists($Foto_Lama)) {
+                unlink($Foto_Lama);
+            }
         }
         // simpan foto dengan nama baru
-        $Foto_Upload_Tujuan .= basename($Foto);
+        $Foto_Upload_Tujuan .= $Foto;
         if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
             // Update foto di database
             $query_update = "UPDATE data_calon SET foto='$Foto' WHERE username='$Username'";
@@ -54,6 +59,24 @@ if (isset($_POST['ubah'])) {
         }
     } else {
         echo "<script>alert('Format foto tidak valid! Hanya diperbolehkan JPG, JPEG, atau PNG.');</script>";
+    }
+}
+
+// jika user mau menghapus foto
+if (isset($_POST['hapus'])) {
+    // Ubah foto menjadi default.png
+    $Foto = 'default.png';
+    // Update foto di database
+    $query_update = "UPDATE data_calon SET foto='$Foto' WHERE username='$username'";
+    if (mysqli_query($koneksi, $query_update)) {
+        // Hapus foto lama jika ada
+        $Foto_Upload_Tujuan = '../assets/img/foto_pelamar/' . $data['foto'];
+        if (file_exists($Foto_Upload_Tujuan)) {
+            unlink($Foto_Upload_Tujuan);
+        } 
+        echo "<script>alert('Foto berhasil dihapus');</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus foto! Silakan coba lagi.');</script>";
     }
 }
 
@@ -206,7 +229,7 @@ if (isset($_POST['hapus_pendidikan'])) {
                                     </div>
                                     <hr>
                                     <form action="" method="post" enctype="multipart/form-data" class="mt-3">
-                                        <input type="file" name="foto" accept="image/*" class="form-control mb-2" required>
+                                        <input type="file" name="foto" accept="image/*" class="form-control mb-2">
                                         <div class="row">
                                             <div class="col-6">
                                                 <input type="submit" name="ubah" value="Ubah" class="btn btn-primary w-100">
@@ -276,14 +299,9 @@ if (isset($_POST['hapus_pendidikan'])) {
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>Golongan Darah</b></label>
+                                            <label class="col-sm-4 col-form-label"><b>No KTP</b></label>
                                             <div class="col-sm-8">
-                                                <select name="golongan_darah" class="form-control">
-                                                    <option value="A" <?php if($data['golongan_darah']=='A') echo 'selected'; ?>>A</option>
-                                                    <option value="B" <?php if($data['golongan_darah']=='B') echo 'selected'; ?>>B</option>
-                                                    <option value="AB" <?php if($data['golongan_darah']=='AB') echo 'selected'; ?>>AB</option>
-                                                    <option value="O" <?php if($data['golongan_darah']=='O') echo 'selected'; ?>>O</option>
-                                                </select>
+                                                <input type="text" name="no_ktp" class="form-control" value="<?php echo htmlspecialchars($data['no_ktp']); ?>">
                                             </div>
                                         </div>
                                         <hr>

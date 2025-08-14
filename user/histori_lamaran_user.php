@@ -98,10 +98,10 @@ $data = mysqli_fetch_assoc($result);
                                         echo '<tr>';
                                         echo '<th scope="row">' . $no++ . '</th>';
                                         echo '<td>' . $row['posisi'] . '</td>';
-                                        echo '<td><a href="detail_perusahaan.php?id=' . $row['id_perusahaan'] . '">' . $row['nama_perusahaan'] . '</a></td>';
+                                        echo '<td>' . $row['nama_perusahaan'] . '</td>';
                                         echo '<td>' . $row['tanggal_melamar'] . '</td>';
                                         echo '<td>' . $row['status_lamaran'] . '</td>';
-                                        echo '<td><a href="detail_lowongan.php?id=' . $row['id_lowongan'] . '" class="btn btn-info btn-sm">Detail</a></td>';
+                                        echo '<td><a href="detail_histori.php?id_lowongan=' . $row['id_lowongan'] . '&id_perusahaan=' . $row['id_perusahaan'] . '" class="btn btn-primary">Detail</a></td>';
                                         echo '</tr>';
                                     }
                                     ?>

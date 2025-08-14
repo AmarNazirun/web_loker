@@ -14,7 +14,7 @@ $data = mysqli_fetch_assoc($result);
 if (isset($_POST['verifikasi'])) {
     $id_lowongan = $_POST['id_lowongan'];
     // update status lowongan menjadi terverifikasi
-    $update_query = "UPDATE lowongan SET status = 'terverifikasi' WHERE id_lowongan = $id_lowongan";
+    $update_query = "UPDATE lowongan SET status = 'Terverifikasi' WHERE id_lowongan = $id_lowongan";
     if (mysqli_query($koneksi, $update_query)) {
         echo "<script>alert('Lowongan berhasil diverifikasi!');</script>";
         echo "<script>window.location.href='lowongan_online.php';</script>";
@@ -22,15 +22,15 @@ if (isset($_POST['verifikasi'])) {
         echo "<script>alert('Gagal memverifikasi lowongan!');</script>";
         echo "<script>window.location.href='verifikasi_lowongan.php';</script>";
     }
-} elseif (isset($_POST['hapus'])) {
+} elseif (isset($_POST['tolak'])) {
     $id_lowongan = $_POST['id_lowongan'];
-    // hapus lowongan
-    $delete_query = "DELETE FROM lowongan WHERE id_lowongan = $id_lowongan";
-    if (mysqli_query($koneksi, $delete_query)) {
-        echo "<script>alert('Lowongan berhasil dihapus!');</script>";
+    // update status lowongan menjadi ditolak
+    $update_query = "UPDATE lowongan SET status = 'Ditolak' WHERE id_lowongan = $id_lowongan";
+    if (mysqli_query($koneksi, $update_query)) {
+        echo "<script>alert('Lowongan berhasil ditolak!');</script>";
         echo "<script>window.location.href='verifikasi_lowongan.php';</script>";
     } else {
-        echo "<script>alert('Gagal menghapus lowongan!');</script>";
+        echo "<script>alert('Gagal menolak lowongan!');</script>";
         echo "<script>window.location.href='verifikasi_lowongan.php';</script>";
     }
 }
@@ -131,7 +131,7 @@ if (isset($_POST['verifikasi'])) {
                                         </form>
                                         <form action='' method='post' style='display:inline;'>
                                             <input type='hidden' name='id_lowongan' value='" . $row['id_lowongan'] . "'>
-                                            <input type='submit' name='hapus' class='btn btn-danger' value='Hapus'>
+                                            <input type='submit' name='tolak' class='btn btn-danger' value='Tolak'>
                                         </form>
                                         </td>";
                                         echo "</tr>";

@@ -95,7 +95,7 @@ include 'config/koneksi.php';
                                         <div class="ps-3">
                                             <h6><?php echo $row['nama_perusahaan']; ?></h6>
                                             <!-- icon uang -->
-                                            <p class="small mb-0"><i class="bi bi-cash-coin"></i> <?php //echo $row['gaji']; ?></p>
+                                            <p class="small mb-0"><i class="bi bi-cash-coin"></i> <?php echo $row['gaji']; ?>/Bulan</p>
                                         </div>
                                     </div>
                                 </div>

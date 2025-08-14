@@ -3,13 +3,14 @@ Konten Dasboard:
 - Jumlah pelamar yang diterima kerja
 - jumlah lowongan yang sudah terverifikasi
 - pekerjaan berdasarkan pendidikan
-
 buat data history pelamar di tabel history_pelamar (opsional)
 
 kalau status pelamar diterima, data pelamar dihapus dari tabel data_calon dan dimasukkan ke tabel pegawai
 
-tambah fitur hapus:
-- tolak lowongan (di detail lowongan & di verifikasi lowongan)
-- hapus lowongan (untuk perusahaan)
-- tolak pelamar (untuk perusahaan)
+tambah fitur:
 - jika lowongan sudah melewati tanggal ditutup, maka lowongan otomatis dihapus dan status pelamar otomatis ditolak
+- tambah user disnaker
+
+nomor ktp user ganti email
+
+sign out user disnaker

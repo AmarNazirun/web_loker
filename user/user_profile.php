@@ -89,10 +89,10 @@ if (isset($_POST['simpan_perubahan'])) {
     $jenis_kelamin = $_POST['jenis_kelamin'];
     $agama = $_POST['agama'];
     $status_kawin = $_POST['status_kawin'];
-    $golongan_darah = $_POST['golongan_darah'];
+    $no_ktp = $_POST['no_ktp'];
 
     // Update data calon di database
-    $query_update_profile = "UPDATE data_calon SET nama_lengkap='$nama_lengkap', handphone='$handphone', tempat_lahir='$tempat_lahir', jenis_kelamin='$jenis_kelamin', agama='$agama', status_kawin='$status_kawin', golongan_darah='$golongan_darah' WHERE id_calon='$id_calon'";
+    $query_update_profile = "UPDATE data_calon SET nama_lengkap='$nama_lengkap', handphone='$handphone', tempat_lahir='$tempat_lahir', jenis_kelamin='$jenis_kelamin', agama='$agama', status_kawin='$status_kawin', no_ktp='$no_ktp' WHERE id_calon='$id_calon'";
     
     if (mysqli_query($koneksi, $query_update_profile)) {
         echo "<script>alert('Data profile berhasil diubah');</script>";

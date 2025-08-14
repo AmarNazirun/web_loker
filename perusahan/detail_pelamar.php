@@ -15,28 +15,20 @@ $query_perusahaan = "SELECT * FROM data_perusahaan WHERE username = '$username'"
 $result_perusahaan = mysqli_query($koneksi, $query_perusahaan);
 $data = mysqli_fetch_assoc($result_perusahaan);
 
-// jika lamaran diterima
-if (isset($_POST['terima_lamaran'])) {
-    $id_calon = $_GET['id_calon'];
-    $id_lowongan = $_GET['id_lowongan'];
-    $query_terima = "UPDATE pelamar SET status_lamaran = 'Diterima' WHERE id_calon = '$id_calon' AND id_lowongan = '$id_lowongan'";
-    if (mysqli_query($koneksi, $query_terima)) {
-        echo "<script>alert('Lamaran diterima');</script>";
-        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
-    } else {
-        echo "<script>alert('Gagal menerima lamaran');</script>";
-        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
-    }
-} elseif (isset($_POST['tolak_lamaran'])) {
+// cek apakah tombol terima_lamaran atau tolak_lamaran ditekan
+if (isset($_POST['terima_lamaran']) || isset($_POST['tolak_lamaran'])) {
     $id_calon = $_POST['id_calon'];
     $id_lowongan = $_POST['id_lowongan'];
-    $query_tolak = "UPDATE pelamar SET status_lamaran = 'Ditolak' WHERE id_calon = '$id_calon' AND id_lowongan = '$id_lowongan'";
-    if (mysqli_query($koneksi, $query_tolak)) {
-        echo "<script>alert('Lamaran ditolak');</script>";
-        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
+    $status = isset($_POST['terima_lamaran']) ? 'Diterima' : 'Ditolak';
+
+    // update status pelamar
+    $update_status = "UPDATE pelamar SET status_lamaran = '$status' WHERE id_calon = $id_calon AND id_lowongan = $id_lowongan";
+    if (mysqli_query($koneksi, $update_status)) {
+        $message = "Lamaran telah " . strtolower($status) . ".";
+        echo "<script>alert('$message'); window.location.href='detail_lowongan.php?id_lowongan=$id_lowongan';</script>";
     } else {
-        echo "<script>alert('Gagal menolak lamaran');</script>";
-        echo "<script>window.location.href = 'lowongan_saya.php';</script>";
+        $message = "Gagal mengupdate status pelamar.";
+        echo "<script>alert('$message'); window.location.href='detail_lowongan.php?id_lowongan=$id_lowongan';</script>";
     }
 }
 ?>
@@ -170,17 +162,29 @@ if (isset($_POST['terima_lamaran'])) {
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>Golongan Darah</b></label>
+                                            <label class="col-sm-4 col-form-label"><b>No KTP</b></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="golongan_darah" class="form-control" value="<?php echo htmlspecialchars($data_calon['golongan_darah']); ?>" readonly>
+                                                <input type="text" name="golongan_darah" class="form-control" value="<?php echo htmlspecialchars($data_calon['no_ktp']); ?>" readonly>
                                             </div>
                                         </div>
                                         <hr>
                                         <div class="mt-3 text-end">
-                                            <form action="update_profile.php" method="post">
-                                                <input type="hidden" name="id_calon" value="<?php echo $data_calon['id_calon']; ?>">
-                                                <input type="submit" name="terima_lamaran" value="Terima Lamaran" class="btn btn-primary col-12">
-                                            </form>
+                                            <div class="row g-2">
+                                                <div class="col-12 col-md-6">
+                                                    <form action="" method="post">
+                                                        <input type="hidden" name="id_calon" value="<?php echo $data_calon['id_calon']; ?>">
+                                                        <input type="hidden" name="id_lowongan" value="<?php echo $_GET['id_lowongan']; ?>">
+                                                        <input type="submit" name="terima_lamaran" class="btn btn-success w-100" value="Terima" onclick="return confirm('Apakah Anda yakin ingin menerima pelamar ini?');">
+                                                    </form>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <form action="" method="post">
+                                                        <input type="hidden" name="id_calon" value="<?php echo $data_calon['id_calon']; ?>">
+                                                        <input type="hidden" name="id_lowongan" value="<?php echo $_GET['id_lowongan']; ?>">
+                                                        <input type="submit" name="tolak_lamaran" class="btn btn-danger w-100" value="Tolak" onclick="return confirm('Apakah Anda yakin ingin menolak pelamar ini?');">
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>

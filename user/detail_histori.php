@@ -141,8 +141,6 @@ if (isset($_POST['lamar_pekerjaan'])) {
                                         <?php echo nl2br(htmlspecialchars($lowongan['deskripsi'])); ?>
                                     </p>
                                 </div>
-                                <hr>
-                                <input type="submit" class="btn btn-success" name="lamar_pekerjaan" value="Lamar Pekerjaan">
                             </form>
                         </div>
                     </div>

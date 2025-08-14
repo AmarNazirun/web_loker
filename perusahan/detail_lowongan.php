@@ -10,30 +10,21 @@ $query = "SELECT * FROM user inner join data_perusahaan on user.username = data_
 $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
-// cek apakah tombol tambah lowongan sudah ditekan
-if (isset($_POST['tambah_lowongan'])) {
-    // ambil data dari form
-    $judul_lowongan = $_POST['judul_lowongan'];
-    $tanggal_dibuka = $_POST['tanggal_dibuka'];
-    $tanggal_ditutup = $_POST['tanggal_ditutup'];
-    $deskripsi = $_POST['deskripsi'];
+// cek apakah tombol terima_lamaran atau tolak_lamaran ditekan
+if (isset($_POST['terima_lamaran']) || isset($_POST['tolak_lamaran'])) {
+    $id_calon = $_POST['id_calon'];
+    $id_lowongan = $_POST['id_lowongan'];
+    $status = isset($_POST['terima_lamaran']) ? 'Diterima' : 'Ditolak';
 
-    // query untuk memasukkan data lowongan ke database
-    $query = "INSERT INTO lowongan (posisi, deskripsi, tanggal_dibuka, tanggal_ditutup, id_perusahaan) VALUES ('$judul_lowongan', '$deskripsi', '$tanggal_dibuka', '$tanggal_ditutup', $data[id_perusahaan])";
-    $result = mysqli_query($koneksi, $query);
-
-    
-
-    // cek apakah query berhasil
-    if ($result) {
-        echo "<script>alert('Lowongan berhasil ditambahkan!'); window.location.href='lowongan_saya.php';</script>";
+    // update status pelamar
+    $update_status = "UPDATE pelamar SET status_lamaran = '$status' WHERE id_calon = $id_calon AND id_lowongan = $id_lowongan";
+    if (mysqli_query($koneksi, $update_status)) {
+        $message = "Lamaran telah " . strtolower($status) . ".";
+        echo "<script>alert('$message'); window.location.href='detail_lowongan.php?id_lowongan=$id_lowongan';</script>";
     } else {
-        echo "<script>alert('Gagal menambahkan lowongan. Silakan coba lagi.'); window.location.href='tambah_lowongan.php';</script>";
+        $message = "Gagal mengupdate status pelamar.";
+        echo "<script>alert('$message'); window.location.href='detail_lowongan.php?id_lowongan=$id_lowongan';</script>";
     }
-} elseif (isset($_POST['batal'])) {
-    // jika tombol batal ditekan, redirect ke halaman lowongan
-    header("Location: lowongan.php");
-    exit();
 }
 
 ?>
@@ -109,8 +100,9 @@ if (isset($_POST['tambah_lowongan'])) {
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Nama Pelamar</th>
-                                        <th scope="col">Email</th>
+                                        <th scope="col">Handphone</th>
                                         <th scope="col">Tanggal Melamar</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
                                 </thead>
@@ -126,9 +118,15 @@ if (isset($_POST['tambah_lowongan'])) {
                                             <td><?php echo $pelamar['nama_lengkap']; ?></td>
                                             <td><?php echo $pelamar['handphone']; ?></td>
                                             <td><?php echo date('d-m-Y', strtotime($pelamar['tanggal_melamar'])); ?></td>
+                                            <td><?php echo $pelamar['status_lamaran']; ?></td>
                                             <td>
                                                 <a href="detail_pelamar.php?id_calon=<?php echo $pelamar['id_calon']; ?>&id_lowongan=<?php echo $_GET['id_lowongan']; ?>" class="btn btn-info btn-sm">Detail</a>
-                                                <a href="hapus_pelamar.php?id_pelamar=<?php echo $pelamar['id_pelamar']; ?>&id_lowongan=<?php echo $_GET['id_lowongan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus pelamar ini?')">Hapus</a>
+                                                <form action="" method="post" class="d-inline">
+                                                    <input type="hidden" name="id_calon" value="<?php echo $pelamar['id_calon']; ?>">
+                                                    <input type="hidden" name="id_lowongan" value="<?php echo $_GET['id_lowongan']; ?>">
+                                                    <input type="submit" name="terima_lamaran" class="btn btn-success btn-sm" value="Terima" onclick="return confirm('Apakah Anda yakin ingin menerima pelamar ini?');">
+                                                    <input type="submit" name="tolak_lamaran" class="btn btn-danger btn-sm" value="Tolak" onclick="return confirm('Apakah Anda yakin ingin menolak pelamar ini?');">
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php }

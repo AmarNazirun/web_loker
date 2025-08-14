@@ -235,7 +235,7 @@ include 'config/koneksi.php';
               ?>
                 <div class="news">
                   <div class="post-item clearfix">
-                    <img src="../assets/img/logo_perusahaan/<?php echo $row['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="width: 50px; height: 50px;">
+                    <img src="assets/img/logo_perusahaan/<?php echo $row['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="width: 50px; height: 50px;">
                     <h4><a href="detail_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>&id_perusahaan=<?php echo $row['id_perusahaan']; ?>"><?php echo $row['posisi']; ?></a></h4>
 
                     <p><?php echo $row['nama_perusahaan']; ?></p>

@@ -77,43 +77,40 @@ $data = mysqli_fetch_assoc($result);
         </div><!-- End Page Title -->
 
         <section class="section">
+            
             <div class="row">
-                <div class="col-lg-12">
-                    
-                    <?php
-                    
-                    // gabungkan tabel lowongan dengan tabel perusahaan
-                    $query = "SELECT * FROM lowongan inner join data_perusahaan on lowongan.id_perusahaan = data_perusahaan.id_perusahaan WHERE lowongan.status = 'Terverifikasi'"; 
-                    $result = mysqli_query($koneksi, $query);
-                    
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        // Tampilkan data lowongan online
-                        echo '<div class="card mb-3">';
-                        echo '<div class="card-header">';
-                        echo '<div class="card-body">';
-                        echo '<h3>' . $row['posisi'] . '</h3>';
-                        echo '<p>Perusahaan:  <a href="detail_perusahaan.php?id=' . $row['id_perusahaan'] . '">' . $row['nama_perusahaan'] . '</a></p>';
-                        echo '<hr>';
-                        echo '<p class="card-text"><strong>Deskripsi:</strong></p>';
-                        echo '<p class="card-text">' . $row['deskripsi'] . '</p>';
-                        echo '<p class="card-text"><strong>Tanggal Dibuka:</strong> ' . $row['tanggal_dibuka'] . '</p>';
-                        echo '<p class="card-text"><strong>Tanggal Ditutup:</strong> ' . $row['tanggal_ditutup'] . '</p>';
-                        echo '<hr>';
-                        // Tampilkan tombol untuk melamar
-                        echo '<form action="" method="post">';
-                        echo '<input type="hidden" name="id_lowongan" value="' . $row['id_lowongan'] . '">';
-                        echo '<input type="submit" name="lamar" class="btn btn-primary" value="Lamar Sekarang">';
-                        echo '</form>';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
-                    }
-                    
-                    ?>
+                <?php
+                $query = "SELECT * FROM lowongan inner join data_perusahaan on lowongan.id_perusahaan = data_perusahaan.id_perusahaan WHERE lowongan.status = 'Terverifikasi'";
+                $result = mysqli_query($koneksi, $query);
 
-                </div>
+                while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+                    <!-- card lowongan -->
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <a href="detail_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>&id_perusahaan=<?php echo $row['id_perusahaan']; ?>" class="text-decoration-none">
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $row['posisi']; ?></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <img src="../assets/img/logo_perusahaan/<?php echo $row['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="width: 50px; height: 50px;">
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6><?php echo $row['nama_perusahaan']; ?></h6>
+                                            <!-- icon uang -->
+                                            <p class="small mb-0"><i class="bi bi-cash-coin"></i> <?php echo $row['gaji']; ?>/Bulan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- End card lowongan -->
+                <?php
+                }
+                ?>
             </div>
-        </section><!-- End Section -->
+        </section>
 
     </main><!-- End #main -->
 

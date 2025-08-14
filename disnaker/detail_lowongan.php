@@ -22,6 +22,17 @@ if (isset($_POST['verifikasi'])) {
         echo "<script>alert('Gagal memverifikasi lowongan!');</script>";
         echo "<script>window.location.href='verifikasi_lowongan.php';</script>";
     }
+} elseif (isset($_POST['tolak'])) {
+    $id_lowongan = $_POST['id_lowongan'];
+    // update status lowongan menjadi ditolak
+    $update_query = "UPDATE lowongan SET status = 'Ditolak' WHERE id_lowongan = $id_lowongan";
+    if (mysqli_query($koneksi, $update_query)) {
+        echo "<script>alert('Lowongan berhasil ditolak!');</script>";
+        echo "<script>window.location.href='verifikasi_lowongan.php';</script>";
+    } else {
+        echo "<script>alert('Gagal menolak lowongan!');</script>";
+        echo "<script>window.location.href='verifikasi_lowongan.php';</script>";
+    }
 }
 
 ?>
@@ -134,8 +145,9 @@ if (isset($_POST['verifikasi'])) {
                                     </p>
                                 </div>
                                 <hr>
-                                <input type="submit" class="btn btn-success" name="verifikasi_lowongan" value="Verifikasi Lowongan">
-                                <input type="submit" class="btn btn-danger" name="tolak_lowongan" value="Tolak Lowongan">
+                                <input type="hidden" name="id_lowongan" value="<?php echo $lowongan['id_lowongan']; ?>">
+                                <input type="submit" class="btn btn-success" name="verifikasi" value="Verifikasi Lowongan">
+                                <input type="submit" class="btn btn-danger" name="tolak" value="Tolak Lowongan">
                             </form>
                         </div>
                     </div>

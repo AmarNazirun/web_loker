@@ -10,6 +10,20 @@ $query = "SELECT * FROM user inner join data_perusahaan on user.username = data_
 $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
+// jika lowongan dihapus
+if (isset($_POST['hapus_lowongan'])) {
+    
+    $id_lowongan = $_POST['id_lowongan'];
+    $hapus_lowongan = "DELETE FROM lowongan WHERE id_lowongan = '$id_lowongan'";
+    $hapus_pelamar = "DELETE FROM pelamar WHERE id_lowongan = '$id_lowongan'";
+    
+    if (mysqli_query($koneksi, $hapus_lowongan) && mysqli_query($koneksi, $hapus_pelamar)) {
+        echo "<script>alert('Lowongan berhasil dihapus.'); window.location.href='lowongan_saya.php';</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus lowongan.'); window.location.href='lowongan_saya.php';</script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -109,7 +123,10 @@ $data = mysqli_fetch_assoc($result);
                                             <td><?php echo $jumlah_pelamar; ?></td>
                                             <td>
                                                 <a href="detail_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-info btn-sm">Detail</a>
-                                                <a href="hapus_lowongan.php?id_lowongan=<?php echo $row['id_lowongan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus lowongan ini?')">Hapus</a>
+                                                <form action="" method="post" class="d-inline">
+                                                    <input type="hidden" name="id_lowongan" value="<?php echo $row['id_lowongan']; ?>">
+                                                    <input type="submit" name="hapus_lowongan" class="btn btn-danger btn-sm" value="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus lowongan ini?');">
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php }

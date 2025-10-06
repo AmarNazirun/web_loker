@@ -244,7 +244,7 @@ $data = mysqli_fetch_assoc($result);
     <br>
 
     <!-- ======= Footer ======= -->
-    <?php include 'assets/template/footer.php'; ?>
+    <?php include '../assets/template/footer.php'; ?>
     <!-- End Footer -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

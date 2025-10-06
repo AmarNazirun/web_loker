@@ -17,6 +17,12 @@ if (isset($_POST['login'])) {
         // jika ada, redirect ke halaman dashboard
         $data = mysqli_fetch_assoc($result);
         if (password_verify($password, $data['password'])) {
+            // jika level user adalah 'belum terverifikasi', tampilkan pesan error
+            if ($data['level'] == 'belum terverifikasi') {
+                echo "<script>alert('Akun Anda belum terverifikasi. Silakan tunggu proses verifikasi.');</script>";
+                // kembali ke halaman login
+                echo "<script>window.location.href = 'login.php';</script>";
+            }
             // set session untuk menyimpan data user
             session_start();
             $_SESSION['username'] = $data['username'];

@@ -58,7 +58,7 @@ if (isset($_POST['register'])) {
                     $Foto_Upload_Tujuan .= basename($Foto);
                     if (move_uploaded_file($Foto_Sumber, $Foto_Upload_Tujuan)) {
                         // Query untuk memasukkan data ke tabel user
-                        $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
+                        $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','belum terverifikasi')");
                         // Query untuk memasukkan data ke tabel data_calon
                         $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, email, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$email', '$Foto', '$Username')");
                         // Cek apakah query berhasil
@@ -80,7 +80,7 @@ if (isset($_POST['register'])) {
                 // Jika tidak ada foto yang diupload, gunakan foto default
                 $Foto = 'default.png';
                 // Query untuk memasukkan data ke tabel user
-                $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
+                $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','belum terverifikasi')");
                 // Query untuk memasukkan data ke tabel data_perusahaan
                 $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, email, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$email', '$Foto', '$Username')");
                 // Cek apakah query berhasil
@@ -226,7 +226,7 @@ if (isset($_POST['register'])) {
                                         <!-- no ktp -->
                                         <div class="col-md-4">
                                             <label for="Nemail" class="form-label">Email</label>
-                                            <input type="text" name="email" class="form-control" id="email">
+                                            <input type="text" name="email" class="form-control" id="email" required>
                                         </div>
 
                                         <!-- foto -->

@@ -19,12 +19,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="lowongan_online.php">Lowongan Online</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">Tips Loker</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Cari Lowongan</a>
-                        </li>
+                        </li> -->
                         <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dropdown

@@ -23,8 +23,17 @@
                             <a class="nav-link" href="lowongan_online.php">Lowongan Terverifikasi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Cari Lowongan</a>
+                            <a class="nav-link" href="data_perusahaan.php">Data Perusahaan</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="data_pelamar.php">Data Pelamar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="data_register.php">Data Register</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="#">Cari Lowongan</a>
+                        </li> -->
                         <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dropdown
@@ -56,17 +65,17 @@
 
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 
-                                <li>
+                                <!-- <li>
                                     <a class="dropdown-item d-flex align-items-center" href="user_profile.php">
                                         <i class="bi bi-person"></i>
                                         <span>My Profile</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
 
-                                <li>
+                                <!-- <li>
                                     <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                                         <i class="bi bi-gear"></i>
                                         <span>Account Settings</span>
@@ -81,7 +90,7 @@
                                         <i class="bi bi-question-circle"></i>
                                         <span>Need Help?</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

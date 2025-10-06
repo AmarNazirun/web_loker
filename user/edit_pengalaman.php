@@ -135,7 +135,7 @@ $data = mysqli_fetch_assoc($result);
                                 $gaji = $_POST['gaji'];
 
                                 // update data ke database
-                                $query = "UPDATE pengalaman_kerja SET perusahaan='$perusahaan', alamat_perusahaan='$alamat_perusahaan', telepon='$telepon', tahun_awal='$tahun_awal', tahun_akhir='$tahun_akhir', posisi='$posisi', tanggung_jawab='$tanggung_jawab', alasan_keluar='$alasan_keluar', gaji_terakhir=$gaji WHERE id_pengalaman=$_GET[id_pengalaman]";
+                                $query = "UPDATE pengalaman_kerja SET perusahaan='$perusahaan', alamat_perusahaan='$alamat_perusahaan', telepon='$telepon', tahun_awal='$tahun_awal', tahun_akhir='$tahun_akhir', posisi='$posisi', tanggung_jawab='$tanggung_jawab', alasan_keluar='$alasan_keluar', gaji_terakhir='$gaji' WHERE id_pengalaman=$_GET[id_pengalaman]";
 
                                 if (mysqli_query($koneksi, $query)) {
                                     echo "<script>alert('Data pengalaman kerja berhasil disimpan');</script>";

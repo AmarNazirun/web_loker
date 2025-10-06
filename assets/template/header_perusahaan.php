@@ -22,9 +22,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="lowongan_saya.php">Lowongan Saya</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">Cari Lowongan</a>
-                        </li>
+                        </li> -->
                         <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dropdown
@@ -67,22 +67,22 @@
                                     <hr class="dropdown-divider">
                                 </li>
 
-                                <li>
+                                <!-- <li>
                                     <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                                         <i class="bi bi-gear"></i>
                                         <span>Account Settings</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
 
-                                <li>
+                                <!-- <li>
                                     <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                                         <i class="bi bi-question-circle"></i>
                                         <span>Need Help?</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

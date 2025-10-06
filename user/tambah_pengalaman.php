@@ -129,7 +129,7 @@ $data = mysqli_fetch_assoc($result);
                                 $gaji = $_POST['gaji'];
 
                                 // simpan data ke database
-                                $query = "INSERT INTO pengalaman_kerja (perusahaan, alamat_perusahaan, telepon, tahun_awal, tahun_akhir, posisi, tanggung_jawab, alasan_keluar, gaji_terakhir, id_calon) VALUES ('$perusahaan', '$alamat_perusahaan', '$telepon', '$tahun_awal', '$tahun_akhir', '$posisi', '$tanggung_jawab', '$alasan_keluar', $gaji, $data[id_calon])";
+                                $query = "INSERT INTO pengalaman_kerja (perusahaan, alamat_perusahaan, telepon, tahun_awal, tahun_akhir, posisi, tanggung_jawab, alasan_keluar, gaji_terakhir, id_calon) VALUES ('$perusahaan', '$alamat_perusahaan', '$telepon', '$tahun_awal', '$tahun_akhir', '$posisi', '$tanggung_jawab', '$alasan_keluar', '$gaji', $data[id_calon])";
 
                                 if (mysqli_query($koneksi, $query)) {
                                     echo "<script>alert('Data pengalaman kerja berhasil disimpan');</script>";

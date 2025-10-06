@@ -60,7 +60,7 @@ if (isset($_POST['register'])) {
                         // Query untuk memasukkan data ke tabel user
                         $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
                         // Query untuk memasukkan data ke tabel data_calon
-                        $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, email, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$No_KTP', '$Foto', '$Username')");
+                        $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, email, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$email', '$Foto', '$Username')");
                         // Cek apakah query berhasil
                         if ($query_data_calon && $query_user) {
                             echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";
@@ -82,7 +82,7 @@ if (isset($_POST['register'])) {
                 // Query untuk memasukkan data ke tabel user
                 $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','user')");
                 // Query untuk memasukkan data ke tabel data_perusahaan
-                $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, no_ktp, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$email', '$Foto', '$Username')");
+                $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, email, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$email', '$Foto', '$Username')");
                 // Cek apakah query berhasil
                 if ($query_data_calon && $query_user) {
                     echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";
@@ -225,8 +225,8 @@ if (isset($_POST['register'])) {
 
                                         <!-- no ktp -->
                                         <div class="col-md-4">
-                                            <label for="No_KTP" class="form-label">Email</label>
-                                            <input type="text" name="email" class="form-control" id="No_KTP">
+                                            <label for="Nemail" class="form-label">Email</label>
+                                            <input type="text" name="email" class="form-control" id="email">
                                         </div>
 
                                         <!-- foto -->

@@ -1,6 +1,6 @@
 -- Membuat database dan tabel-tabel yang diperlukan
-CREATE DATABASE web_loker;
-USE web_loker;
+CREATE DATABASE website_loker;
+USE website_loke;
 
 -- Tabel-tabel utama aplikasi web loker
 
@@ -30,7 +30,22 @@ CREATE TABLE data_perusahaan (
     website TEXT,
     logo TEXT,
     username TEXT,
-    deskripsi TEXT
+    tentang_perusahaan TEXT
+);
+
+CREATE TABLE admin_disnaker (
+    id_perusahaan INT AUTO_INCREMENT PRIMARY KEY,
+    nama_admin TEXT,
+    alamat TEXT,
+    telepon VARCHAR(20),
+    email TEXT,
+    facebook TEXT,
+    instagram TEXT,
+    x TEXT, 
+    website TEXT,
+    logo TEXT,
+    username TEXT,
+    tentang_perusahaan TEXT
 );
 
 CREATE TABLE lowongan (
@@ -108,7 +123,7 @@ CREATE TABLE prestasi_calon (
 );
 
 CREATE TABLE user (
-    username TEXT PRIMARY KEY,
+    username VARCHAR(255) PRIMARY KEY,
     password TEXT,
     level VARCHAR(15)
 );

@@ -299,9 +299,9 @@ if (isset($_POST['hapus_pendidikan'])) {
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>No KTP</b></label>
+                                            <label class="col-sm-4 col-form-label"><b>Email</b></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="no_ktp" class="form-control" value="<?php echo htmlspecialchars($data['no_ktp']); ?>">
+                                                <input type="text" name="no_ktp" class="form-control" value="<?php echo htmlspecialchars($data['email']); ?>">
                                             </div>
                                         </div>
                                         <hr>

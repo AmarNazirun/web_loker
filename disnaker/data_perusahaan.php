@@ -90,7 +90,7 @@ $data = mysqli_fetch_assoc($result);
                                 <tbody>
                                     <?php
                                     include '../config/koneksi.php';
-                                    $query = "SELECT * FROM data_perusahaan";
+                                    $query = "SELECT * FROM user inner join data_perusahaan on user.username = data_perusahaan.username WHERE user.level = 'perusahaan'";
                                     $result = mysqli_query($koneksi, $query);
                                     while ($data = mysqli_fetch_assoc($result)) {
                                     ?>

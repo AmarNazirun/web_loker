@@ -90,7 +90,7 @@ if (isset($_POST['verifikasi'])) {
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Data Pendaftar Baru</h5>
+                            <h5 class="card-title">Data Pelamar Baru</h5>
                             <table class="table table-striped datatable">
                                 <thead>
                                     <tr>
@@ -116,6 +116,49 @@ if (isset($_POST['verifikasi'])) {
                                                     <a href="verifikasi_user.php?id_calon=<?php echo $data['id_calon']; ?>" class="btn btn-primary btn-sm">Detail</a>
                                                     <input type="text" name="id_calon" value="<?php echo $data['id_calon']; ?>" hidden>
                                                     <button type="submit" name="verifikasi" class="btn btn-success btn-sm">Verifikasi</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Data Perusahaan Baru</h5>
+                            <table class="table table-striped datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Logo</th>
+                                        <th scope="col">Nama Perusahaan</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">No. Telepon</th>
+                                        <th scope="col">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    include '../config/koneksi.php';
+                                    $query = "SELECT * FROM user inner join data_perusahaan on user.username = data_perusahaan.username WHERE user.level = 'belum terverifikasi'";
+                                    $result = mysqli_query($koneksi, $query);
+                                    while ($data = mysqli_fetch_assoc($result)) {
+                                    ?>
+                                        <tr>
+                                            <td><img src="../assets/img/logo_perusahaan/<?php echo $data['logo']; ?>" alt="Logo Perusahaan" width="50"></td>
+                                            <td><?php echo $data['nama_perusahaan']; ?></td>
+                                            <td><?php echo $data['email']; ?></td>
+                                            <td><?php echo $data['telepon']; ?></td>
+                                            <td>
+                                                <form action="" method="post">
+                                                    <a href="verifikasi_perusahaan.php?id_perusahaan=<?php echo $data['id_perusahaan']; ?>" class="btn btn-primary btn-sm">Detail</a>
+                                                    <input type="text" name="id_perusahaan" value="<?php echo $data['id_perusahaan']; ?>" hidden>
+                                                    <button type="submit" name="verifikasi_perusahaan" class="btn btn-success btn-sm">Verifikasi</button>
                                                 </form>
                                             </td>
                                         </tr>

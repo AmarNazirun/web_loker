@@ -11,7 +11,7 @@ $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
 // proses verifikasi
-if (isset($_POST['verifikasi'])) {
+if (isset($_POST['verifikasi_pelamar'])) {
     $id_calon = $_POST['id_calon'];
     // update level user menjadi 'user'
     $query = "UPDATE user SET level='user' WHERE username=(SELECT username FROM data_calon WHERE id_calon='$id_calon')";
@@ -19,6 +19,18 @@ if (isset($_POST['verifikasi'])) {
     if ($result) {
         echo "<script>alert('Akun berhasil diverifikasi!');</script>";
         echo "<script>window.location.href = 'data_pelamar.php';</script>";
+    } else {
+        echo "<script>alert('Akun gagal diverifikasi!');</script>";
+        echo "<script>window.location.href = 'data_register.php';</script>";
+    }
+} elseif (isset($_POST['verifikasi_perusahaan'])) {
+    $id_perusahaan = $_POST['id_perusahaan'];
+    // update level user menjadi 'perusahaan'
+    $query = "UPDATE user SET level='perusahaan' WHERE username=(SELECT username FROM data_perusahaan WHERE id_perusahaan='$id_perusahaan')";
+    $result = mysqli_query($koneksi, $query);
+    if ($result) {
+        echo "<script>alert('Akun berhasil diverifikasi!');</script>";
+        echo "<script>window.location.href = 'data_register.php';</script>";
     } else {
         echo "<script>alert('Akun gagal diverifikasi!');</script>";
         echo "<script>window.location.href = 'data_register.php';</script>";
@@ -115,7 +127,7 @@ if (isset($_POST['verifikasi'])) {
                                                 <form action="" method="post">
                                                     <a href="verifikasi_user.php?id_calon=<?php echo $data['id_calon']; ?>" class="btn btn-primary btn-sm">Detail</a>
                                                     <input type="text" name="id_calon" value="<?php echo $data['id_calon']; ?>" hidden>
-                                                    <button type="submit" name="verifikasi" class="btn btn-success btn-sm">Verifikasi</button>
+                                                    <button type="submit" name="verifikasi_pelamar" class="btn btn-success btn-sm">Verifikasi</button>
                                                 </form>
                                             </td>
                                         </tr>

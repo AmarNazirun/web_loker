@@ -82,7 +82,7 @@ if (isset($_POST['register'])) {
                 // Query untuk memasukkan data ke tabel user
                 $query_user = mysqli_query($koneksi, "INSERT INTO user (username, password, level) VALUES ('$Username', '$Password_Hash','belum terverifikasi')");
                 // Query untuk memasukkan data ke tabel data_perusahaan
-                $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, email, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$email', '$Foto', '$Username')");
+                $query_data_calon = mysqli_query($koneksi, "INSERT INTO data_calon (nama_lengkap, handphone, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, status_kawin, email, foto, username) VALUES ('$Nama_Lengkap', '$Handphone', '$Tempat_Lahir', '$Tanggal_Lahir', '$Jenis_Kelamin', '$Agama', '$Status_Kawin', '$Email', '$Foto', '$Username')");
                 // Cek apakah query berhasil
                 if ($query_data_calon && $query_user) {
                     echo "<script>alert('Registrasi berhasil! Silakan login.');</script>";

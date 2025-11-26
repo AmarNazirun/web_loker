@@ -98,7 +98,7 @@ $data = mysqli_fetch_assoc($result);
                                         <div class="ps-3">
                                             <h6><?php echo $row['nama_perusahaan']; ?></h6>
                                             <!-- icon uang -->
-                                            <p class="small mb-0"><i class="bi bi-cash-coin"></i> <?php echo $row['gaji']; ?>/Bulan</p>
+                                            <p class="small mb-0">Rp. <?php echo $row['gaji']; ?>/Bulan</p>
                                         </div>
                                     </div>
                                 </div>

@@ -23,6 +23,20 @@ if (isset($_POST['verifikasi_pelamar'])) {
         echo "<script>alert('Akun gagal diverifikasi!');</script>";
         echo "<script>window.location.href = 'data_register.php';</script>";
     }
+
+} elseif (isset($_POST['tolak_verifikasi_pelamar'])) {
+    $id_calon = $_POST['id_calon'];
+    // hapus data user dan data_calon
+    $query = "DELETE user, data_calon FROM user INNER JOIN data_calon ON user.username = data_calon.username WHERE data_calon.id_calon='$id_calon'";
+    $result = mysqli_query($koneksi, $query);
+    if ($result) {
+        echo "<script>alert('Akun berhasil ditolak dan dihapus!');</script>";
+        echo "<script>window.location.href = 'data_register.php';</script>";
+    } else {
+        echo "<script>alert('Akun gagal ditolak!');</script>";
+        echo "<script>window.location.href = 'data_register.php';</script>";
+    }
+
 } elseif (isset($_POST['verifikasi_perusahaan'])) {
     $id_perusahaan = $_POST['id_perusahaan'];
     // update level user menjadi 'perusahaan'
@@ -33,6 +47,19 @@ if (isset($_POST['verifikasi_pelamar'])) {
         echo "<script>window.location.href = 'data_register.php';</script>";
     } else {
         echo "<script>alert('Akun gagal diverifikasi!');</script>";
+        echo "<script>window.location.href = 'data_register.php';</script>";
+    }
+
+} elseif (isset($_POST['tolak_verifikasi_perusahaan'])) {
+    $id_perusahaan = $_POST['id_perusahaan'];
+    // hapus data user dan data_perusahaan
+    $query = "DELETE user, data_perusahaan FROM user INNER JOIN data_perusahaan ON user.username = data_perusahaan.username WHERE data_perusahaan.id_perusahaan='$id_perusahaan'";
+    $result = mysqli_query($koneksi, $query);
+    if ($result) {
+        echo "<script>alert('Akun berhasil ditolak dan dihapus!');</script>";
+        echo "<script>window.location.href = 'data_register.php';</script>";
+    } else {
+        echo "<script>alert('Akun gagal ditolak!');</script>";
         echo "<script>window.location.href = 'data_register.php';</script>";
     }
 }
@@ -128,6 +155,7 @@ if (isset($_POST['verifikasi_pelamar'])) {
                                                     <a href="verifikasi_user.php?id_calon=<?php echo $data['id_calon']; ?>" class="btn btn-primary btn-sm">Detail</a>
                                                     <input type="text" name="id_calon" value="<?php echo $data['id_calon']; ?>" hidden>
                                                     <button type="submit" name="verifikasi_pelamar" class="btn btn-success btn-sm">Verifikasi</button>
+                                                    <button type="submit" name="tolak_verifikasi_pelamar" class="btn btn-danger btn-sm">Tolak</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -171,6 +199,7 @@ if (isset($_POST['verifikasi_pelamar'])) {
                                                     <a href="verifikasi_perusahaan.php?id_perusahaan=<?php echo $data['id_perusahaan']; ?>" class="btn btn-primary btn-sm">Detail</a>
                                                     <input type="text" name="id_perusahaan" value="<?php echo $data['id_perusahaan']; ?>" hidden>
                                                     <button type="submit" name="verifikasi_perusahaan" class="btn btn-success btn-sm">Verifikasi</button>
+                                                    <button type="submit" name="tolak_verifikasi_perusahaan" class="btn btn-danger btn-sm">Tolak</button>
                                                 </form>
                                             </td>
                                         </tr>

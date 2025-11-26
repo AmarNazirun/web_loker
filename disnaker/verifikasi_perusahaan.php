@@ -10,36 +10,40 @@ $result = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_assoc($result);
 
 // ambil data pelamar berdasarkan id dengan get
-$id_calon = $_GET['id_calon'];
-$query_calon = "SELECT * FROM data_calon WHERE id_calon = $id_calon";
+$id_calon = $_GET['id_perusahaan'];
+$query_calon = "SELECT * FROM data_perusahaan WHERE id_perusahaan = $id_calon";
 $result_calon = mysqli_query($koneksi, $query_calon);
 $data_calon = mysqli_fetch_assoc($result_calon);
 
 // proses verifikasi
 if (isset($_POST['verifikasi'])) {
     $id_calon = $_POST['id_calon'];
-    // update level user menjadi 'user'
-    $query = "UPDATE user SET level='user' WHERE username=(SELECT username FROM data_calon WHERE id_calon='$id_calon')";
-    $result = mysqli_query($koneksi, $query);
-    if ($result) {
+    // update status user dan data_calon menjadi terverifikasi
+    $query_username = "SELECT username FROM data_calon WHERE id_calon='$id_calon'";
+    $result_username = mysqli_query($koneksi, $query_username);
+    $data_username = mysqli_fetch_assoc($result_username);
+    $username = $data_username['username'];
+    $update_user_query = "UPDATE user SET status = 'Terverifikasi' WHERE username='$username'";
+    $update_data_calon_query = "UPDATE data_calon SET status = 'Terverifikasi' WHERE id_calon='$id_calon'";
+    if (mysqli_query($koneksi, $update_user_query) && mysqli_query($koneksi, $update_data_calon_query)) {
         echo "<script>alert('Akun berhasil diverifikasi!');</script>";
-        echo "<script>window.location.href = 'data_pelamar.php';</script>";
+        echo "<script>window.location.href = 'data_register.php';</script>";
     } else {
-        echo "<script>alert('Akun gagal diverifikasi!');</script>";
+        echo "<script>alert('Gagal memverifikasi akun!');</script>";
         echo "<script>window.location.href = 'data_register.php';</script>";
     }
 
 } elseif (isset($_POST['tolak'])) {
     $id_calon = $_POST['id_calon'];
-    // delete user dan data_calon
+    // update status user dan data_calon menjadi ditolak
     $query_username = "SELECT username FROM data_calon WHERE id_calon='$id_calon'";
     $result_username = mysqli_query($koneksi, $query_username);
     $data_username = mysqli_fetch_assoc($result_username);
     $username = $data_username['username'];
-    $delete_user_query = "DELETE FROM user WHERE username='$username'";
-    $delete_data_calon_query = "DELETE FROM data_calon WHERE id_calon='$id_calon'";
-    if (mysqli_query($koneksi, $delete_user_query) && mysqli_query($koneksi, $delete_data_calon_query)) {
-        echo "<script>alert('Akun berhasil ditolak dan dihapus!');</script>";
+    $update_user_query = "UPDATE user SET status = 'Ditolak' WHERE username='$username'";
+    $update_data_calon_query = "UPDATE data_calon SET status = 'Ditolak' WHERE id_calon='$id_calon'";
+    if (mysqli_query($koneksi, $update_user_query) && mysqli_query($koneksi, $update_data_calon_query)) {
+        echo "<script>alert('Akun berhasil ditolak!');</script>";
         echo "<script>window.location.href = 'data_register.php';</script>";
     } else {
         echo "<script>alert('Gagal menolak akun!');</script>";
@@ -118,10 +122,10 @@ if (isset($_POST['verifikasi'])) {
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Foto Profile</h5>
                                     <div class="d-flex align-items-center justify-content-center w-100" style="height: 250px;">
-                                        <img src="../assets/img/foto_pelamar/<?php echo $data_calon['foto']; ?>" alt="Foto Profil" class="img-fluid" style="object-fit: cover; width: 200px; height: 200px;">
+                                        <img src="../assets/img/logo_perusahaan/<?php echo $data_calon['logo']; ?>" alt="Foto Profil" class="img-fluid" style="object-fit: cover; width: 200px; height: 200px;">
                                     </div>
                                     <div class="mt-3">
-                                        <h5 class="mb-1"><?php echo htmlspecialchars($data_calon['nama_lengkap']); ?></h5>
+                                        <h5 class="mb-1"><?php echo htmlspecialchars($data_calon['nama_perusahaan']); ?></h5>
                                         <span class="text-muted">@<?php echo htmlspecialchars($data_calon['username']); ?></span>
                                     </div>
                                 </div>
@@ -143,49 +147,49 @@ if (isset($_POST['verifikasi'])) {
                                         <div class="row mb-2 align-items-center">
                                             <label class="col-sm-4 col-form-label"><b>Nama Lengkap</b></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="nama_lengkap" class="form-control" value="<?php echo htmlspecialchars($data_calon['nama_lengkap']); ?>">
+                                                <input type="text" name="nama_lengkap" class="form-control" value="<?php echo htmlspecialchars($data_calon['nama_perusahaan']); ?>">
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>Handphone</b></label>
+                                            <label class="col-sm-4 col-form-label"><b>Alamat</b></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="handphone" class="form-control" value="<?php echo htmlspecialchars($data_calon['handphone']); ?>">
+                                                <input type="text" name="handphone" class="form-control" value="<?php echo htmlspecialchars($data_calon['alamat']); ?>">
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>Tempat Lahir</b></label>
+                                            <label class="col-sm-4 col-form-label"><b>Telepon</b></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="tempat_lahir" class="form-control" value="<?php echo htmlspecialchars($data_calon['tempat_lahir']); ?>">
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>Jenis Kelamin</b></label>
-                                            <div class="col-sm-8">
-                                                <input type="text" name="jenis_kelamin" class="form-control" value="<?php echo htmlspecialchars($data_calon['jenis_kelamin']); ?>">
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>Agama</b></label>
-                                            <div class="col-sm-8">
-                                                <input type="text" name="agama" class="form-control" value="<?php echo htmlspecialchars($data_calon['agama']); ?>">
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2 align-items-center">
-                                            <label class="col-sm-4 col-form-label"><b>Status Kawin</b></label>
-                                            <div class="col-sm-8">
-                                                <input type="text" name="status_kawin" class="form-control" value="<?php echo htmlspecialchars($data_calon['status_kawin']); ?>">
+                                                <input type="text" name="tempat_lahir" class="form-control" value="<?php echo htmlspecialchars($data_calon['telepon']); ?>">
                                             </div>
                                         </div>
                                         <div class="row mb-2 align-items-center">
                                             <label class="col-sm-4 col-form-label"><b>Email</b></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="no_ktp" class="form-control" value="<?php echo htmlspecialchars($data['email']); ?>">
+                                                <input type="text" name="jenis_kelamin" class="form-control" value="<?php echo htmlspecialchars($data_calon['email']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Facebook</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="status_kawin" class="form-control" value="<?php echo htmlspecialchars($data_calon['facebook']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>Instagram</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="no_ktp" class="form-control" value="<?php echo htmlspecialchars($data_calon['instagram']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-sm-4 col-form-label"><b>X</b></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="no_ktp" class="form-control" value="<?php echo htmlspecialchars($data_calon['x']); ?>">
                                             </div>
                                         </div>
                                         <hr>
                                         <div class="mt-3 text-end">
                                             <form action="update_profile.php" method="post">
-                                                <input type="hidden" name="id_calon" value="<?php echo $_GET['id_calon']; ?>">
+                                                <input type="hidden" name="id_perusahaan" value="<?php echo $_GET['id_perusahaan']; ?>">
                                                 <input type="submit" name="verifikasi" value="Verifikasi Pendaftar" class="btn btn-success col-12">
                                                 <input type="submit" name="tolak" value="Tolak Pendaftar" class="btn btn-danger col-12 mt-2">
                                             </form>

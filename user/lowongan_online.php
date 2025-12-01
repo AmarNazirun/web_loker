@@ -106,22 +106,62 @@ if (isset($_POST['lamar'])) {
 
     <main id="main" class="main">
 
-        <div class="pagetitle">
-            <h1>Lowongan Online</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item active">Lowongan Online</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
+        <!-- sistem filter -->
+        <div class="mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="posisi" class="card-title">Nama Pekerjaan</label>
+                            <input type="text" class="form-control" id="posisi" name="posisi" placeholder="Cari pekerjaan..." value="<?php echo isset($_GET['posisi']) ? htmlspecialchars($_GET['posisi']) : ''; ?>">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="pendidikan" class="card-title">Pendidikan Minimal</label>
+                            <select class="form-select" id="pendidikan" name="pendidikan">
+                                <option value="">Semua Pendidikan</option>
+                                <option value="SMA" <?php echo isset($_GET['pendidikan']) && $_GET['pendidikan'] == 'SMA' ? 'selected' : ''; ?>>SMA</option>
+                                <option value="Diploma" <?php echo isset($_GET['pendidikan']) && $_GET['pendidikan'] == 'Diploma' ? 'selected' : ''; ?>>Diploma</option>
+                                <option value="S1" <?php echo isset($_GET['pendidikan']) && $_GET['pendidikan'] == 'S1' ? 'selected' : ''; ?>>S1</option>
+                                <option value="S2" <?php echo isset($_GET['pendidikan']) && $_GET['pendidikan'] == 'S2' ? 'selected' : ''; ?>>S2</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end ">
+                            <button type="submit" class="btn btn-primary">Cari</button>
+                            <a href="lowongan_online.php" class="btn btn-secondary mx-2">Reset</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <section class="section">
             
             <div class="row">
                 <?php
-                $query = "SELECT * FROM lowongan inner join data_perusahaan on lowongan.id_perusahaan = data_perusahaan.id_perusahaan WHERE lowongan.status = 'Terverifikasi'";
+                // Bangun query dengan filter jika ada
+                $filters = array();
+                $filters[] = "lowongan.status = 'Terverifikasi'";
+
+                $posisi = isset($_GET['posisi']) ? trim($_GET['posisi']) : '';
+                $pendidikan = isset($_GET['pendidikan']) ? trim($_GET['pendidikan']) : '';
+
+                if ($posisi !== '') {
+                    $posisi_safe = mysqli_real_escape_string($koneksi, $posisi);
+                    $filters[] = "(lowongan.posisi LIKE '%$posisi_safe%' OR lowongan.deskripsi LIKE '%$posisi_safe%')";
+                }
+
+                if ($pendidikan !== '') {
+                    $pendidikan_safe = mysqli_real_escape_string($koneksi, $pendidikan);
+                    $filters[] = "lowongan.pendidikan_minimal = '$pendidikan_safe'";
+                }
+
+                $where = implode(' AND ', $filters);
+                $query = "SELECT * FROM lowongan INNER JOIN data_perusahaan ON lowongan.id_perusahaan = data_perusahaan.id_perusahaan WHERE $where";
                 $result = mysqli_query($koneksi, $query);
+
+                if (!$result) {
+                    echo '<div class="col-12"><div class="alert alert-danger">Terjadi kesalahan query.</div></div>';
+                }
 
                 while ($row = mysqli_fetch_assoc($result)) {
                 ?>
@@ -133,14 +173,14 @@ if (isset($_POST['lamar'])) {
                                     <h5 class="card-title"><?php echo $row['posisi']; ?></h5>
                                     <div class="d-flex align-items-center">
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <img src="../assets/img/logo_perusahaan/<?php echo $row['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="width: 50px; height: 50px;">
+                                            <img src="assets/img/logo_perusahaan/<?php echo $row['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="width: 50px; height: 50px;">
                                         </div>
                                         <div class="ps-3">
                                             <h6><?php echo $row['nama_perusahaan']; ?></h6>
-                                            <!-- icon uang -->
-                                            <p class="small mb-0">
-                                                <!-- Icon Rupiah: jika tidak ada, gunakan tulisan Rp -->
-                                                <span class="fw-bold">Rp</span> <?php echo $row['gaji']; ?>/Bulan
+                                            <!-- Minimal pendidikan -->
+                                            <p class="small mb-0">Pendidikan: <?php echo $row['pendidikan_minimal']; ?></p>
+                                            <!-- Gaji -->
+                                            <p class="small mb-0">Rp. <?php echo $row['gaji']; ?>/Bulan
                                             </p>
                                         </div>
                                     </div>

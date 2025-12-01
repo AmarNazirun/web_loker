@@ -142,6 +142,14 @@ if (isset($_POST['hapus_lowongan'])) {
         </section>
 
     </main><!-- End #main -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
     <!-- ======= Footer ======= -->
     <?php include '../assets/template/footer.php'; ?>

@@ -141,6 +141,8 @@ if (isset($_POST['lamar'])) {
                 // Bangun query dengan filter jika ada
                 $filters = array();
                 $filters[] = "lowongan.status = 'Terverifikasi'";
+                // Hanya tampilkan lowongan yang belum melewati tanggal tutup
+                $filters[] = "DATE(lowongan.tanggal_ditutup) >= CURDATE()";
 
                 $posisi = isset($_GET['posisi']) ? trim($_GET['posisi']) : '';
                 $pendidikan = isset($_GET['pendidikan']) ? trim($_GET['pendidikan']) : '';

@@ -173,7 +173,7 @@ if (isset($_POST['lamar'])) {
                                     <h5 class="card-title"><?php echo $row['posisi']; ?></h5>
                                     <div class="d-flex align-items-center">
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <img src="assets/img/logo_perusahaan/<?php echo $row['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="width: 50px; height: 50px;">
+                                            <img src="../assets/img/logo_perusahaan/<?php echo $row['logo']; ?>" alt="Logo Perusahaan" class="img-fluid" style="width: 50px; height: 50px;">
                                         </div>
                                         <div class="ps-3">
                                             <h6><?php echo $row['nama_perusahaan']; ?></h6>

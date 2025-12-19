@@ -88,7 +88,7 @@ $data = mysqli_fetch_assoc($result);
                     </div>
                     <div class="ps-3">
                       <?php
-                      $query = "SELECT COUNT(*) AS total_lowongan FROM lowongan";
+                      $query = "SELECT COUNT(*) AS total_lowongan FROM lowongan WHERE tanggal_ditutup >= CURDATE() AND (status = 'terverifikasi' OR status = 'Terverifikasi')";
                       $result = mysqli_query($koneksi, $query);
                       $data = mysqli_fetch_assoc($result);
                       $total_lowongan = $data['total_lowongan'];
@@ -200,7 +200,7 @@ $data = mysqli_fetch_assoc($result);
               <h5 class="card-title">Lowongan Terbaru</h5>
 
               <?php
-              $query = "SELECT * FROM lowongan JOIN data_perusahaan ON lowongan.id_perusahaan = data_perusahaan.id_perusahaan ORDER BY lowongan.tanggal_dibuka DESC LIMIT 5";
+              $query = "SELECT * FROM lowongan JOIN data_perusahaan ON lowongan.id_perusahaan = data_perusahaan.id_perusahaan WHERE lowongan.tanggal_ditutup >= CURDATE() AND (lowongan.status = 'terverifikasi' OR lowongan.status = 'Terverifikasi') ORDER BY lowongan.tanggal_dibuka DESC LIMIT 5";
               $result = mysqli_query($koneksi, $query);
               while ($row = mysqli_fetch_assoc($result)) {
               ?>
